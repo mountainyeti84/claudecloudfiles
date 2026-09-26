@@ -1,0 +1,83 @@
+{
+  "v": 4,
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-09-25T00:00:00Z"
+  },
+  "title": "Connected Demand — The Hidden Link Between Paid Social and PPC",
+  "order": [
+    "cover",
+    "question",
+    "journey",
+    "remove-the-ad",
+    "silos",
+    "funnel-reality",
+    "blended-cac",
+    "messy-middle",
+    "rule955",
+    "sec-evidence",
+    "proof-searchlift",
+    "proof-attribution",
+    "proof-shareofsearch",
+    "study-overview",
+    "pattern1",
+    "pattern2",
+    "pattern3",
+    "pattern-summary",
+    "decision-window",
+    "honesty",
+    "sec-apply",
+    "budget-trap",
+    "sixty-forty",
+    "travel-path",
+    "travel-social-search",
+    "travel-case",
+    "evertrek-study",
+    "founder-quote",
+    "new-way",
+    "scorecard",
+    "ninety-days",
+    "how-we-work",
+    "closing",
+    "cta",
+    "sources"
+  ],
+  "cover": "cover",
+  "sections": {
+    "problem": {
+      "description": "The problem: Meta creates demand that Google gets credited for.",
+      "start": "cover"
+    },
+    "evidence": {
+      "description": "The evidence: independent research and a 55-account analysis.",
+      "start": "sec-evidence"
+    },
+    "apply": {
+      "description": "What it means for your budget.",
+      "start": "sec-apply"
+    },
+    "travel": {
+      "description": "A high-consideration example: travel, and our own account.",
+      "start": "travel-path"
+    },
+    "measure": {
+      "description": "How to measure it, and the 90-day plan.",
+      "start": "new-way"
+    },
+    "adsyeti": {
+      "description": "How The Ads Yeti works, and how to start.",
+      "start": "how-we-work"
+    }
+  },
+  "faces": {
+    "satoshi": {
+      "family": "Satoshi",
+      "src": "/_blob/5bbebab73fe08323e799c472e7d633de"
+    },
+    "jetbrains-mono": {
+      "family": "JetBrains Mono",
+      "href": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+    }
+  },
+  "designSystems": []
+}
