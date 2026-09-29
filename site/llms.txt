@@ -1,10 +1,12 @@
 # Ads Yeti
 
-> Ads Yeti is a founder-led paid ads agency (Meta ads and Google ads) that judges campaigns on what happens after the click: leads, follow-up, sales and revenue. The Knowledge Centre answers the questions founders ask before hiring anyone.
+> Ads Yeti is a founder-led paid social agency run by Andy Moore. It runs Meta (Facebook and Instagram) ads for travel and high-growth brands and judges campaigns on what happens after the click: leads, follow-up, bookings and revenue. The Knowledge Centre answers the questions founders ask before hiring anyone.
 
-- [Knowledge Centre](https://www.adsyeti.com/resources/): hub, browse by topic or question type
+- [Homepage](https://www.adsyeti.com/): services, client work and contact
+- [Knowledge Centre](https://www.adsyeti.com/resources/): browse by topic or question type
 - [Blog](https://www.adsyeti.com/resources/blog/): every article
+- [Ad Insights Tool](https://www.adsyeti.com/meta-ads-diagnostic-tool/): free Meta ads diagnostic
 
-## Leads, CRM & follow-up
+## Leads, follow-up & bookings
 
-- [Why are my Facebook ads getting leads but no sales?](https://www.adsyeti.com/resources/blog/why-facebook-ads-get-leads-but-no-sales/): Cheap leads that never buy usually aren't an ads problem. Here's where the journey actually breaks, and what to check first.
+- [Why are my Facebook ads getting leads but no sales?](https://www.adsyeti.com/resources/blog/why-facebook-ads-get-leads-but-no-sales/): Cheap leads that never book usually aren't an ads problem. Here's where the journey actually breaks, and what to check first.
