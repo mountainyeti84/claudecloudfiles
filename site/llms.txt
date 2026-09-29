@@ -1,0 +1,10 @@
+# Ads Yeti
+
+> Ads Yeti is a founder-led paid ads agency (Meta ads and Google ads) that judges campaigns on what happens after the click: leads, follow-up, sales and revenue. The Knowledge Centre answers the questions founders ask before hiring anyone.
+
+- [Knowledge Centre](https://www.adsyeti.com/resources/): hub, browse by topic or question type
+- [Blog](https://www.adsyeti.com/resources/blog/): every article
+
+## Leads, CRM & follow-up
+
+- [Why are my Facebook ads getting leads but no sales?](https://www.adsyeti.com/resources/blog/why-facebook-ads-get-leads-but-no-sales/): Cheap leads that never buy usually aren't an ads problem. Here's where the journey actually breaks, and what to check first.

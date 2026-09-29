@@ -1,0 +1,16 @@
+{
+  "answer": "Usually because the problem isn't the ads. When Meta is delivering leads but nobody's buying, the break is almost always somewhere after the click: the offer attracts the wrong people, the form is too easy, follow-up is too slow, or nobody's nurturing the lead until they're ready. Check what happens in the first hour after an enquiry before you touch the campaign.",
+  "takeaways": [
+    "Cheap leads that don't buy are a journey problem more often than a targeting problem.",
+    "Speed to lead matters enormously. Look at how long it takes someone to call a new enquiry back.",
+    "Adding a little friction to the form (one qualifying question) usually improves lead quality.",
+    "Send your sales data back to Meta so it optimises for buyers, not form-fillers.",
+    "Change one thing at a time and follow it through to revenue, not just cost per lead."
+  ],
+  "faqs": [
+    {"q": "Is it normal for Facebook leads to be low quality?", "a": "It's common, but it isn't inevitable. Meta finds exactly who you ask it to find. If you optimise for the cheapest possible form fill, that's what you get. Qualifying questions, a clearer offer and feeding sales data back into Meta all push quality up."},
+    {"q": "Should I switch from Meta lead forms to a landing page?", "a": "Not automatically. Instant forms are fast and cheap, which is exactly why they can attract low-intent people. Try a 'higher intent' form type with a review step and a qualifying question first. If quality still isn't there, test a landing page against it and compare cost per sale, not cost per lead."},
+    {"q": "How quickly should we follow up a new lead?", "a": "As fast as you realistically can, ideally within minutes while they still remember filling in the form. If that's not possible, an instant automated text or email that sets expectations buys you time."},
+    {"q": "How do I know if it's the ads or the sales process?", "a": "Follow a batch of leads all the way through. How many were contacted, how many answered, how many had a real conversation, how many bought? If lots of leads never get a proper conversation, it's the process. If they get the conversation and they're simply the wrong people, look at the ad and the offer."}
+  ]
+}
