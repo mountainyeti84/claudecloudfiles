@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Built on Belief</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+:root{
+  --ink:#070B14; --navy:#0B1220; --card:#111A2D; --line:#1D2840;
+  --orange:#FF6B00; --orange-2:#FF8A3D; --rust:#C2410C;
+  --text:#EEF1F7; --muted:#97A1B8; --dim:#6E7891; --blue:#93A9D9;
+  --light:#F3F4F8; --light-ink:#0B1020; --light-muted:#566077; --light-line:#E1E4EC;
+}
+@page{size:1334px 750px;margin:0}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#2a2f3a}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+.pg{width:1334px;height:750px;position:relative;overflow:hidden;background:var(--ink);padding:92px 89px 0;page-break-after:always;break-after:page;margin:0 auto}
+.pg.navy{background:var(--navy)}
+.pg.light{background:var(--light);color:var(--light-ink)}
+.pg.orange{background:var(--orange);color:var(--light-ink)}
+.lbl{font-family:'JetBrains Mono',monospace;font-weight:500;font-size:14px;letter-spacing:.2em;text-transform:uppercase;color:var(--orange-2)}
+.light .lbl{color:var(--rust)}
+.orange .lbl{color:#3a1a05}
+h1{font-weight:800;font-size:92px;line-height:.98;letter-spacing:-.035em}
+h2{font-weight:700;font-size:40px;line-height:1.1;letter-spacing:-.03em;margin-top:16px;max-width:1060px}
+h3{font-weight:700;font-size:21px;letter-spacing:-.015em;line-height:1.25}
+p{font-size:17.5px;line-height:1.62;color:var(--muted)}
+.light p{color:var(--light-muted)}
+p.lead{font-size:19px;color:#C6CDDC;max-width:900px}
+.light p.lead{color:#3c4458}
+p strong,li strong{color:var(--text);font-weight:600}
+.light p strong{color:var(--light-ink)}
+.ft{position:absolute;left:89px;right:89px;bottom:44px;display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:#6E7891}
+.light .ft{color:#8a93a8}
+.orange .ft{color:#4a2408}
+.mt8{margin-top:8px}.mt16{margin-top:16px}.mt24{margin-top:24px}.mt32{margin-top:32px}.mt40{margin-top:40px}
+.grid{display:grid;gap:18px}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}.g5{grid-template-columns:repeat(5,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 22px 24px}
+.card p{font-size:15.5px;line-height:1.55;margin-top:8px}
+.card .lbl{font-size:12.5px;color:var(--dim)}
+.card.top{border-top:3px solid var(--orange)}
+.card.left{border-left:3px solid var(--orange)}
+.light .card{background:#fff;border-color:var(--light-line)}
+.light .card .lbl{color:#8a93a8}
+.card.black{background:var(--ink);border-color:var(--ink);color:var(--text)}
+.card.black p{color:var(--muted)}
+.light .card.black p strong{color:var(--text)}
+.card.black .lbl{color:var(--orange-2)}
+.card.or{background:var(--orange);border-color:var(--orange);color:var(--light-ink)}
+.card.or p{color:#3a1a05}
+.big{font-weight:800;font-size:58px;letter-spacing:-.04em;line-height:1}
+.big.o{color:var(--orange)}
+.light .big.o{color:var(--rust)}
+.mono{font-family:'JetBrains Mono',monospace;letter-spacing:.14em;text-transform:uppercase;font-size:13px}
+.photo-r{position:absolute;top:0;right:0;bottom:0;background-size:cover;background-position:center}
+.photo-r::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--ink) 0%,rgba(7,11,20,.55) 30%,rgba(7,11,20,.1) 70%)}
+.monday{margin-top:22px;background:var(--orange);color:var(--light-ink);border-radius:14px;padding:18px 24px;display:flex;gap:22px;align-items:flex-start}
+.monday .lbl{color:#3a1a05;white-space:nowrap;padding-top:3px}
+.monday p{color:var(--light-ink);font-size:16.5px;line-height:1.5;font-weight:500}
+.steal-n{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.2em;color:var(--orange-2)}
+.quote{font-size:30px;line-height:1.35;font-weight:500;letter-spacing:-.015em;color:var(--text)}
+.check{display:flex;gap:16px;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--light-line)}
+.box{flex:0 0 22px;height:22px;border:2px solid var(--rust);border-radius:5px;margin-top:2px}
+.check span{font-size:16.5px;line-height:1.45;color:#2b3346}
+.tl{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.tl .card{min-height:200px}
+.pill{display:inline-block;background:var(--orange);color:var(--light-ink);font-weight:700;font-size:20px;padding:16px 26px;border-radius:12px}
+.ph{display:inline-block;border:1.5px dashed var(--muted);color:var(--muted);padding:15px 22px;border-radius:12px;font-size:16px;margin-left:16px}
+table{border-collapse:collapse;width:100%;font-size:15.5px}
+th{background:var(--ink);color:#fff;text-align:left;padding:13px 16px;font-weight:600}
+td{background:#fff;padding:13px 16px;border-bottom:1px solid var(--light-line);color:#2b3346;vertical-align:top;line-height:1.45}
+tr:nth-child(even) td{background:#EDF0F7}
+@media screen{body{padding:24px 0}.pg{margin-bottom:24px;box-shadow:0 10px 40px rgba(0,0,0,.35)}}
+@media screen and (max-width:1380px){.pg{zoom:calc(100vw / 1400px)}}
+</style>
+</head>
+<body>
+
+<!-- 01 COVER -->
+<section class="pg">
+  <div class="photo-r" style="left:520px;background-image:url(assets/trekker.jpg)"></div>
+  <div style="position:relative">
+    <div class="lbl">// The Ads Yeti · Founder case study · EverTrek</div>
+    <h1 style="margin-top:150px;max-width:760px">Built on belief.</h1>
+    <p class="lead mt24" style="max-width:640px;font-size:21px">How a founder-led adventure brand used Meta to grow from 14p leads to a £3m+ business whose customers stayed even when the trips stopped. What worked, what didn't, and what you can steal for your own brand.</p>
+  </div>
+  <div class="ft"><span>adsyeti.com</span><span>Climb higher / make it count</span></div>
+</section>
+
+<!-- 02 FOUNDER NOTE -->
+<section class="pg navy">
+  <div style="display:grid;grid-template-columns:1fr 300px;gap:70px;align-items:start">
+    <div>
+      <div class="lbl">// Before we start</div>
+      <h2>This one's written with our own money.</h2>
+      <p class="mt24">Most case studies are an agency writing about somebody else's business. This isn't that. EverTrek is my company. Every pound in here came out of our bank account, and every lead had to turn into a real person standing at the start of a real trek before any of it counted.</p>
+      <p class="mt16">When I started EverTrek in 2016 I didn't have a marketing team. I was the marketing team. I built the website, wrote the emails, made the ads, built the funnels and then sat there wondering where the bloody bookings were.</p>
+      <p class="mt16">Ten years later, I think the most useful thing I can share isn't a clever targeting trick. It's how the ads and the brand ended up working together, and why that turned out to matter far more than any single campaign. So here's the story, in roughly the order we learned it, with the bits I think you can genuinely use pulled out along the way.</p>
+      <p class="mt24" style="color:var(--orange-2);font-weight:600;font-size:18px">Andy</p>
+      <div class="mono" style="color:var(--dim);margin-top:4px">Founder · EverTrek &amp; Head Ads Yeti</div>
+    </div>
+    <div style="margin-top:40px;height:380px;border-radius:16px;background:url(assets/andy.jpg) center/cover;box-shadow:0 0 120px rgba(255,107,0,.18)"></div>
+  </div>
+  <div class="ft"><span>00 / Hello</span><span>The Ads Yeti</span></div>
+</section>
+
+<!-- 03 AT A GLANCE -->
+<section class="pg light">
+  <div class="lbl">// Ten years, five numbers</div>
+  <h2>The short version, if you're reading this on your phone.</h2>
+  <div class="grid g5 mt40">
+    <div class="card top"><div class="lbl">Year one</div><div class="big o mt16">14p</div><p>Cost of a Facebook lead in 2016, when it was very easy to think you were a genius.</p></div>
+    <div class="card top"><div class="lbl">Today</div><div class="big o mt16">£3m+</div><p>The adventure travel business EverTrek grew into from a one-man startup.</p></div>
+    <div class="card top"><div class="lbl">The test</div><div class="big o mt16">95%+</div><p>Of customers offered a postponement during COVID stayed, through roughly 20 months of no trips.</p></div>
+    <div class="card top"><div class="lbl">The scale-up</div><div class="big o mt16">£4→£4</div><p>Cost per lead held flat while monthly Meta spend went from £4k to £14k.</p></div>
+    <div class="card top"><div class="lbl">The "dead" lead</div><div class="big o mt16">£18k</div><p>In bookings from one Facebook lead that most reports would have written off.</p></div>
+  </div>
+  <p class="mt32" style="max-width:1000px">None of those numbers came from a single ad. They came from Meta finding the right people and the brand giving them a reason to stay. That's what the rest of this document is about.</p>
+  <div class="ft"><span>00 / At a glance</span><span>The Ads Yeti</span></div>
+</section>
+
+<!-- 04 DIVIDER -->
+<section class="pg">
+  <div class="photo-r" style="left:640px;background-image:url(assets/mountain-right.jpg)"></div>
+  <div style="position:relative;margin-top:120px">
+    <div class="lbl">// Part one</div>
+    <h1 style="font-size:76px;margin-top:20px;max-width:760px">The journey.</h1>
+    <p class="lead mt24" style="max-width:620px">From a kitchen-table startup to a brand people would rather stick with than shop around from. Four chapters, roughly in order.</p>
+  </div>
+  <div class="ft"><span>01 / The journey</span><span>The Ads Yeti</span></div>
+</section>
+
+<!-- 05 CHAPTER 1 -->
+<section class="pg navy">
+  <div class="lbl">// Chapter 01 · 2016</div>
+  <h2>Leads cost 14p. Lookalikes were witchcraft. And nobody was booking.</h2>
+  <div class="grid g2 mt32" style="grid-template-columns:1.25fr 1fr;gap:40px">
+    <div>
+      <p>This was 2016, a wonderful time to convince yourself you were a Facebook Ads genius. Leads cost about 14p, a 1% Lookalike Audience felt like magic, and we all thought Messenger bots were going to replace email. (OK, I did a little.)</p>
+      <p class="mt16">The ads worked, in the sense that Ads Manager was full of lovely numbers. CTR up. CPC down. Engagement flying. But it was my money, and I wasn't really interested in CTR. I wanted to know what came out the other side.</p>
+      <p class="mt16"><strong>That question shaped everything after it.</strong> Not "what did Facebook say worked?" but "what actually made someone book a trip?" I've been trying to answer it ever since.</p>
+    </div>
+    <div class="card left" style="align-self:start">
+      <div class="lbl" style="color:var(--orange-2)">What we learned</div>
+      <h3 class="mt16">Cheap leads are a vanity metric with better manners.</h3>
+      <p>A lead is the start of a conversation, not the end of the job. If you only measure what happens inside the ad platform, you'll optimise for whatever's cheapest to produce, which is rarely the thing that pays the wages.</p>
+    </div>
+  </div>
+  <div class="ft"><span>01 / The journey</span><span>The Ads Yeti</span></div>
+</section>
+
+<!-- 06 CHAPTER 2 -->
+<section class="pg">
+  <div class="lbl">// Chapter 02 · Showing up</div>
+  <h2>The best marketing we did didn't look like marketing.</h2>
+  <p class="lead mt16" style="max-width:1000px">Alongside the ads, we just kept turning up. Regular Facebook Lives. A community group where people asked questions and, increasingly, answered each other's. Over time customers started calling themselves <strong>EverTrekkers</strong>.</p>
+  <div class="grid g4 mt32">
+    <div class="card"><div class="lbl">The face</div><h3 class="mt8">Founder on camera</h3><p>Lives, Q&amp;As, Tuesday Tune-Ins and podcasts. Plenty of rambling mixed in with the useful bits.</p></div>
+    <div class="card"><div class="lbl">The room</div><h3 class="mt8">A place to belong</h3><p>A community where people who'd never met swapped training tips and calmed each other's nerves.</p></div>
+    <div class="card"><div class="lbl">The rituals</div><h3 class="mt8">In-jokes that stuck</h3><p>The Yeti Pose. Neck buffs. "Andy and Dave bingo" in the comments. Nobody planned these.</p></div>
+    <div class="card"><div class="lbl">The help</div><h3 class="mt8">Ask a Yeti</h3><p>Real answers about fitness, altitude and kit, given freely, whether or not anyone was about to book.</p></div>
+  </div>
+  <div class="card left mt24" style="background:transparent;border-color:transparent;border-left-color:var(--orange);padding:6px 0 6px 22px">
+    <p style="font-size:19px;color:var(--text);font-style:italic">"Just showing up, having a chat and trying to be useful. Turns out that might have been marketing too."</p>
+  </div>
+  <div class="ft"><span>01 / The journey</span><span>The Ads Yeti</span></div>
+</section>
+
+<!-- 07 CHAPTER 3 -->
+<section class="pg light">
+  <div class="lbl">// Chapter 03 · The glue</div>
+  <h2>The gap between booking and going isn't dead time. It's where the brand gets built.</h2>
+  <div class="grid g2 mt32" style="grid-template-columns:1fr 1.1fr;gap:40px">
+    <div>
+      <p>In the early years there wasn't much between someone paying a deposit and turning up at the airport. Then, around 2018, feedback from an Everest Base Camp group told us people didn't feel prepared enough.</p>
+      <p class="mt16">Rather than getting defensive, we built a personalised Trip Planner. It ended up about <strong>80 pages long</strong>, with the customer's name on it, fitness plans, maps and practical advice. People carried it, scribbled in it, photographed it and shared it online.</p>
+      <p class="mt16">The lesson wasn't "give people more information". The planner changed the relationship. We stopped being a trip provider and became an adventure partner.</p>
+    </div>
+    <div class="card black" style="padding:28px">
+      <div class="lbl">What filled the gap, bit by bit</div>
+      <p class="mt16" style="font-size:16.5px;line-height:1.9;color:#C6CDDC">Preparation emails · Personalised videos · The Trip Planner · An app with maps and countdowns · Ask a Yeti · Timed notifications · Arrival messages · A members' area · Training content · Tuesday Tune-In · Podcasts · The community</p>
+      <p class="mt16">None of it came from a master plan. Together it became the glue between EverTrek and the customer, and it was still there when the trips weren't.</p>
+    </div>
+  </div>
+  <div class="ft"><span>01 / The journey</span><span>The Ads Yeti</span></div>
+</section>
+
+<!-- 08 CHAPTER 4 COVID -->
+<section class="pg orange">
+  <div class="lbl">// Chapter 04 · March 2020</div>
+  <h1 style="font-size:64px;margin-top:22px;max-width:1080px;letter-spacing:-.035em">85 customers were due to fly to Nepal the next day. Then the world shut.</h1>
+  <div class="grid g2 mt32" style="gap:48px">
+    <p style="color:#2a1404;font-size:18px">I was on a ski trip in Morzine when it became real. Within hours the team were calling customers to tell them they couldn't travel. I'll be honest, I had a proper wobble. If everyone wanted their money back, would EverTrek still exist? We couldn't promise anyone a date. We could only promise how we'd behave.</p>
+    <p style="color:#2a1404;font-size:18px">So we stripped out cancellation and deferral fees, made it simple to keep your trip, and within the first week started live Q&amp;As on Facebook. No formal updates from a faceless company, just us, stuck at home like everyone else. For roughly 20 months we couldn't take anyone trekking. <strong style="color:var(--light-ink)">More than 95% of the customers offered that route stayed.</strong></p>
+  </div>
+  <p class="mt32" style="color:var(--light-ink);font-size:26px;font-weight:700;letter-spacing:-.02em">COVID didn't create the loyalty. It revealed it.</p>
+  <div class="ft"><span>01 / The journey</span><span>The Ads Yeti</span></div>
+</section>
+
+<!-- 09 THE NUMBERS -->
+<section class="pg light">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+    <div><div class="lbl">// Then we turned the dial</div><h2>We tripled Meta. Cost per lead didn't move.</h2></div>
+    <img src="assets/evertrek-logo.jpg" alt="EverTrek" style="height:44px;margin-top:-4px">
+  </div>
+  <p class="mt16" style="max-width:1000px">Years of trust deposits change what scaling feels like. Between June and November we took monthly Meta spend from £4k to £14k. Normally that's where costs start running away from you. They didn't.</p>
+  <div class="grid g3 mt32">
+    <div class="card top"><div class="lbl">Monthly Meta spend</div><div class="big o mt16">£4k → £14k</div><p>June to November</p></div>
+    <div class="card top"><div class="lbl">Monthly paid social leads</div><div class="big o mt16">3,500+</div><p>Up from 800–1,000 a month</p></div>
+    <div class="card top"><div class="lbl">Cost per lead</div><div class="big o mt16">£4 → £4</div><p>Held flat while spend tripled</p></div>
+  </div>
+  <div class="card black mt24" style="padding:22px 28px">
+    <div class="lbl">What happened next</div>
+    <p class="mt8" style="font-size:18px;color:var(--text)">Organic and paid search climbed alongside it: volume, leads and conversions all up. <strong>Meta captured the interest. Search converted the intent.</strong></p>
+  </div>
+  <p class="mt16" style="font-size:13.5px;color:#8a93a8">EverTrek account data, June to November. Search and organic movements are directional, not a claim of causation.</p>
+  <div class="ft"><span>01 / The journey</span><span>EverTrek account data</span></div>
+</section>
+
+<!-- 10 THE £18K LEAD -->
+<section class="pg navy">
+  <div class="lbl">// A journey the report couldn't see</div>
+  <h2>The £18,000 lead that a 30-day report would have called a failure.</h2>
+  <div class="tl mt32">
+    <div class="card"><div class="lbl">Day 0</div><h3 class="mt8">Facebook ad</h3><p>Downloads one of our guides. Doesn't buy. Doesn't speak to sales. Carries on with their life.</p></div>
+    <div class="card"><div class="lbl">Months pass</div><h3 class="mt8">Stays in our world</h3><p>Gets the emails. Sees the content. Has a look around. Nothing in any report.</p></div>
+    <div class="card"><div class="lbl">The return</div><h3 class="mt8">Downloads again</h3><p>A second download triggers our sales team. Somebody actually notices.</p></div>
+    <div class="card"><div class="lbl">The chat</div><h3 class="mt8">A WhatsApp</h3><p>A human conversation. Questions answered. No hard sell.</p></div>
+    <div class="card top"><div class="lbl" style="color:var(--orange-2)">A week later</div><h3 class="mt8">~£18,000 booked</h3><p>Nearly £18k in bookings from a lead that looked dead for months.</p></div>
+  </div>
+  <p class="mt32" style="max-width:1080px">Now, it's one customer journey, and I'm not going to build a strategy around one example. Facebook doesn't get to stick £18k in its attribution column and take the afternoon off. But it shows how messy buying really is. <strong>There's a big difference between a bad lead and a good lead that isn't ready yet.</strong> Most reporting can't tell them apart.</p>
+  <div class="ft"><span>01 / The journey</span><span>The Ads Yeti</span></div>
+</section>
+
+<!-- 11 QUOTE -->
+<section class="pg">
+  <div style="display:grid;grid-template-columns:1fr 330px;gap:60px;align-items:center;margin-top:40px">
+    <div>
+      <div class="lbl">// From the founder</div>
+      <p class="quote mt24">"Someone might first discover us through a Meta ad, then Google EverTrek a few weeks later, read a blog, watch a video, come back through Search and finally book.</p>
+      <p class="quote mt16">That's why good written and visual creative has an impact way beyond the platform it originally appeared on."</p>
+      <p class="mt24" style="color:var(--orange-2);font-weight:600">Andy</p>
+      <div class="mono" style="color:var(--dim);margin-top:4px">Founder · EverTrek &amp; The Ads Yeti</div>
+    </div>
+    <div style="height:420px;border-radius:16px;background:url(assets/andy.jpg) center/cover;box-shadow:0 0 140px rgba(255,107,0,.22)"></div>
+  </div>
+  <div class="ft"><span>01 / The journey</span><span>The Ads Yeti</span></div>
+</section>
+
+<!-- 12 DIVIDER -->
+<section class="pg">
+  <div class="photo-r" style="left:700px;background-image:url(assets/mountain-dusk.jpg)"></div>
+  <div style="position:relative;margin-top:120px">
+    <div class="lbl">// Part two</div>
+    <h1 style="font-size:76px;margin-top:20px;max-width:760px">What you can steal.</h1>
+    <p class="lead mt24" style="max-width:600px">Four things from the EverTrek story that work in any business where people think before they buy. Each one ends with something you can do on Monday morning.</p>
+  </div>
+  <div class="ft"><span>02 / What you can steal</span><span>The Ads Yeti</span></div>
+</section>
+
+<!-- 13 STEAL 1 -->
+<section class="pg navy">
+  <div class="steal-n">STEAL 01 / 04</div>
+  <h2>Make your customer the hero. You're Obi-Wan, not Luke.</h2>
+  <p class="mt16" style="max-width:1050px">Most ads are full of "we offer", "we can", "we're the best". The customer is Luke Skywalker. Your job is to be the experienced guide who helps them get where they're trying to go. On Meta, that means your creative has four jobs, and most brands only ever do the first one.</p>
+  <div class="grid g4 mt24">
+    <div class="card top"><h3 style="color:var(--orange-2)">Inspiration</h3><p>Make the outcome, and the person they'll become, feel real. "I'd bloody love to do that."</p></div>
+    <div class="card top"><h3 style="color:var(--orange-2)">Reassurance</h3><p>Answer the scary questions early: fitness, safety, cost, "is this for someone like me?"</p></div>
+    <div class="card top"><h3 style="color:var(--orange-2)">Proof</h3><p>Let real customers and the community make the risk feel survivable.</p></div>
+    <div class="card top"><h3 style="color:var(--orange-2)">Continuity</h3><p>Carry the same hooks into search ads, landing pages and sales calls so the story joins up.</p></div>
+  </div>
+  <div class="monday"><span class="lbl">Monday morning</span><p>Line up your live Meta ads and label each one with its job. Whichever of the four has nobody doing it is your next creative brief.</p></div>
+  <div class="ft"><span>02 / What you can steal</span><span>The Ads Yeti</span></div>
+</section>
+
+<!-- 14 STEAL 2 -->
+<section class="pg">
+  <div class="steal-n">STEAL 02 / 04</div>
+  <h2>Keep showing up, especially when there's nothing to sell.</h2>
+  <div class="grid g2 mt24" style="grid-template-columns:1.2fr 1fr;gap:40px">
+    <div>
+      <p>Founder-led brands have one unfair advantage that big companies can't buy: a real person. The Lives, the rambling Q&amp;As, the in-jokes, the personalised video that set us apart from the four or five other companies someone was considering. None of it showed up as a conversion. All of it showed up when we needed it.</p>
+      <p class="mt16">Here's the uncomfortable bit. <strong>You can't manufacture loyalty during a crisis. You can only make withdrawals from trust you've already deposited.</strong> Every useful post, every honest answer, every "not yet, train a bit longer first" is a deposit. And on Meta, that same content warms the audiences your prospecting reaches.</p>
+          </div>
+    <div class="card left" style="align-self:start">
+      <div class="lbl" style="color:var(--orange-2)">The Tom Cruise test</div>
+      <p style="color:#C6CDDC;font-size:16.5px">If Tom Cruise emailed your business, you'd use his name, make time, ask questions and make him feel important. What would it cost to give your ordinary customers a slice of that? Personal doesn't have to mean expensive.</p>
+    </div>
+  </div>
+  <div class="monday"><span class="lbl">Monday morning</span><p>Book one recurring slot where the founder shows up on camera, answering real customer questions. Run the best clips as Meta ads to warm audiences.</p></div>
+  <div class="ft"><span>02 / What you can steal</span><span>The Ads Yeti</span></div>
+</section>
+
+<!-- 15 STEAL 3 -->
+<section class="pg navy">
+  <div class="steal-n">STEAL 03 / 04</div>
+  <h2>Follow the lead home. Don't judge it at the form.</h2>
+  <p class="mt16" style="max-width:1050px">The £18k lead taught us this the expensive way. If your sale happens beyond the click, the ad account only sees the first step. You need to watch the whole route, and give it long enough to play out.</p>
+  <div style="display:flex;gap:10px;align-items:center;margin-top:28px">
+    <div class="card" style="flex:1;text-align:center;padding:18px 10px"><h3>Ad</h3></div><span style="color:var(--orange)">→</span>
+    <div class="card" style="flex:1;text-align:center;padding:18px 10px"><h3>Lead</h3></div><span style="color:var(--orange)">→</span>
+    <div class="card" style="flex:1;text-align:center;padding:18px 10px"><h3>Nurture</h3></div><span style="color:var(--orange)">→</span>
+    <div class="card" style="flex:1;text-align:center;padding:18px 10px"><h3>Conversation</h3></div><span style="color:var(--orange)">→</span>
+    <div class="card" style="flex:1;text-align:center;padding:18px 10px"><h3>Booking</h3></div><span style="color:var(--orange)">→</span>
+    <div class="card top" style="flex:1;text-align:center;padding:18px 10px"><h3 style="color:var(--orange-2)">Revenue</h3></div>
+  </div>
+  <div class="grid g2 mt24">
+    <div class="card"><div class="lbl">7-day view · looks like failure</div><p>New audiences arrive who've never heard of you. Efficiency dips. The report looks worse, and someone suggests turning it off.</p></div>
+    <div class="card top"><div class="lbl" style="color:var(--orange-2)">Realistic window · looks like growth</div><p>They research, compare, come back and buy. In our wider research, around a quarter of accounts saw exactly this three to four weeks later.</p></div>
+  </div>
+  <div class="monday"><span class="lbl">Monday morning</span><p>Pull your last 20 customers and work out how long it took each one to go from first touch to purchase. That number, not Meta's default, is your judging window.</p></div>
+  <div class="ft"><span>02 / What you can steal</span><span>The Ads Yeti</span></div>
+</section>
+
+<!-- 16 STEAL 4 -->
+<section class="pg light">
+  <div class="steal-n" style="color:var(--rust)">STEAL 04 / 04</div>
+  <h2>Don't let one dashboard decide who won.</h2>
+  <p class="mt16" style="max-width:1050px">Meta says it did it. Google says it did it. GA4 has another idea entirely. As the business owner, I don't really care who gets the trophy. I just want to know what helped us sell the trip. So we stopped asking one metric to answer three different questions.</p>
+  <div class="mt24" style="border-radius:12px;overflow:hidden;border:1px solid var(--light-line)">
+    <table>
+      <tr><th style="width:22%">Layer</th><th style="width:30%">The question it answers</th><th>What you actually look at</th></tr>
+      <tr><td><strong>01 Channel health</strong></td><td>Did Meta do what we asked?</td><td>Spend, reach, frequency, creative signal, audience quality, cost per lead.</td></tr>
+      <tr><td><strong>02 Demand response</strong></td><td>Did the market react?</td><td>Branded search trend, direct visits, qualified traffic, search conversion rate.</td></tr>
+      <tr><td><strong>03 Commercial outcome</strong></td><td>Did the business get better?</td><td>New customers, bookings, sales velocity, revenue, blended cost of acquisition.</td></tr>
+    </table>
+  </div>
+  <div class="monday"><span class="lbl">Monday morning</span><p>Put weekly Meta spend and branded search volume on the same chart for the last six months. If they move together, you've got a conversation worth having before anyone cuts prospecting.</p></div>
+  <div class="ft"><span>02 / What you can steal</span><span>The Ads Yeti</span></div>
+</section>
+
+<!-- 17 TRAP -->
+<section class="pg">
+  <div class="lbl">// The most expensive sensible decision in marketing</div>
+  <h2>How founder-led brands optimise away next year's customers.</h2>
+  <div class="grid g5 mt32">
+    <div class="card"><div class="lbl">01</div><h3 class="mt8">Meta ROAS dips</h3><p>A soft month. Prospecting looks like the weakest line on the sheet.</p></div>
+    <div class="card"><div class="lbl">02</div><h3 class="mt8">Budget moves to Search</h3><p>Sensible on paper. Search is efficient and closest to revenue.</p></div>
+    <div class="card"><div class="lbl">03</div><h3 class="mt8">Branded search softens</h3><p>Four to eight weeks later. Nobody connects it to step two.</p></div>
+    <div class="card"><div class="lbl">04</div><h3 class="mt8">Costs creep up</h3><p>Fewer new people entering the journey. Same spend, smaller pool.</p></div>
+    <div class="card" style="border-top:3px solid #F87171"><div class="lbl" style="color:#F87171">05</div><h3 class="mt8">"Search has broken"</h3><p>It hasn't. Fewer people were being given a reason to search.</p></div>
+  </div>
+  <p class="mt32" style="max-width:1050px">Every step makes sense on its own. The damage only shows up in the gap between them, and channel-by-channel reporting is built to hide exactly that gap. If EverTrek had made this call in a soft month, I think we'd have quietly starved the very thing that made scaling work.</p>
+  <div class="ft"><span>02 / What you can steal</span><span>The Ads Yeti</span></div>
+</section>
+
+<!-- 18 SELF CHECK -->
+<section class="pg light">
+  <div style="display:grid;grid-template-columns:400px 1fr;gap:60px">
+    <div>
+      <div class="lbl">// Five-minute self-check</div>
+      <h2 style="font-size:36px">Is your Meta building a brand, or just buying clicks?</h2>
+      <p class="mt24">Tick the ones that are true today. Be honest, nobody's watching.</p>
+      <p class="mt16">If you ticked fewer than five, you're probably leaving demand on the table, and you're in very good company. It's exactly where most of the businesses we speak to start.</p>
+    </div>
+    <div>
+      <div class="check"><div class="box"></div><span>A real person from the business appears regularly in our ads or content.</span></div>
+      <div class="check"><div class="box"></div><span>Our creative answers the scary questions, not just the exciting ones.</span></div>
+      <div class="check"><div class="box"></div><span>We follow Meta leads all the way to a sale, not just to the form.</span></div>
+      <div class="check"><div class="box"></div><span>We know our real average time from first touch to purchase.</span></div>
+      <div class="check"><div class="box"></div><span>We agree how long to judge a campaign before it launches.</span></div>
+      <div class="check"><div class="box"></div><span>We can see branded search next to Meta spend, week by week.</span></div>
+      <div class="check"><div class="box"></div><span>Our winning Meta hooks show up in our search ads and landing pages.</span></div>
+      <div class="check" style="border-bottom:none"><div class="box"></div><span>We stay in touch with customers between buying and receiving.</span></div>
+    </div>
+  </div>
+  <div class="ft"><span>03 / Your turn</span><span>The Ads Yeti</span></div>
+</section>
+
+<!-- 19 HOW WE WORK -->
+<section class="pg light">
+  <div class="lbl">// Where The Ads Yeti came from</div>
+  <h2>I never meant to start an agency. Which is probably why I ended up starting one.</h2>
+  <p class="mt16" style="max-width:1050px">After ten years of tinkering with all of this inside EverTrek, other founders started asking us to look at theirs. That became The Ads Yeti. We work with businesses where the sale happens beyond the click, and we judge ourselves the same way I judge EverTrek: did it help you sell more, profitably?</p>
+  <div class="grid g4 mt24">
+    <div class="card top"><div class="lbl" style="color:var(--rust)">01</div><h3 class="mt8">Business goals first</h3><p>We start from the commercial target, then build the channel plan towards it.</p></div>
+    <div class="card top"><div class="lbl" style="color:var(--rust)">02</div><h3 class="mt8">Past the platform</h3><p>Channel, demand and commercial signals, read together.</p></div>
+    <div class="card top"><div class="lbl" style="color:var(--rust)">03</div><h3 class="mt8">Creative as a brand asset</h3><p>What people see early shapes what they search for later.</p></div>
+    <div class="card top"><div class="lbl" style="color:var(--rust)">04</div><h3 class="mt8">Honest windows</h3><p>Tests judged on your real purchase lag, not a platform default.</p></div>
+  </div>
+  <div class="mt24" style="background:var(--ink);border-radius:14px;padding:16px 28px;display:flex;align-items:center;gap:28px">
+    <span class="mono" style="color:var(--dim);white-space:nowrap">Trusted by</span>
+    <img src="assets/trusted-logos.jpg" alt="EverTrek, Bon Voyage, Absolute Escapes, Tŷ Hafan" style="height:58px;width:100%;object-fit:contain">
+  </div>
+  <div class="ft"><span>04 / The Ads Yeti</span><span>adsyeti.com</span></div>
+</section>
+
+<!-- 20 CTA -->
+<section class="pg">
+  <div style="display:grid;grid-template-columns:1fr 360px;gap:40px;align-items:center">
+    <div>
+      <div class="lbl">// Want a second pair of eyes?</div>
+      <h2 style="font-size:48px">Let Andy take a look.</h2>
+      <p class="lead mt16" style="max-width:720px">If you're already spending on Meta and can't quite explain what it's doing for the business, I'll look at your account the way I look at EverTrek's: from the ad, through the lead, all the way to revenue.</p>
+      <div class="grid g3 mt32" style="max-width:780px">
+        <div class="card top"><h3>Your route</h3><p>Where people come in, where they stall, and where you're losing them.</p></div>
+        <div class="card top"><h3>Your pattern</h3><p>Whether Meta looks like it's creating demand that gets captured elsewhere.</p></div>
+        <div class="card top"><h3>Fix this first</h3><p>The one change I'd make first, with a sensible window to judge it.</p></div>
+      </div>
+      <div class="mt32"><span class="pill">adsyeti.com</span><span class="ph">[ add booking link here ]</span></div>
+    </div>
+    <div style="height:330px;background:url(assets/yeti.jpg) center/contain no-repeat"></div>
+  </div>
+  <div class="ft"><span>04 / The Ads Yeti</span><span>Climb higher / make it count</span></div>
+</section>
+
+<!-- 21 SOURCES -->
+<section class="pg light">
+  <div class="lbl">// Sources and honest notes</div>
+  <h2>Where these numbers come from.</h2>
+  <div class="grid g2 mt32" style="gap:28px 60px">
+    <div><h3>EverTrek account data</h3><p class="mt8" style="font-size:15.5px">Meta spend, leads and cost per lead, June to November. Search and organic movements are directional.</p></div>
+    <div><h3>EverTrek customer records</h3><p class="mt8" style="font-size:15.5px">COVID postponement retention (95%+ of customers offered the option) and the £18k customer journey. One journey is an example, not a trend.</p></div>
+    <div><h3>2016 lead costs</h3><p class="mt8" style="font-size:15.5px">Andy's recollection of early EverTrek Facebook campaigns. Approximate, and a very different market to today.</p></div>
+    <div><h3>55-account analysis</h3><p class="mt8" style="font-size:15.5px">Weekly Meta and Google Ads data from UK brands, anonymised. Full detail in our Connected Demand briefing.</p></div>
+  </div>
+  <p class="mt40" style="font-size:14.5px;max-width:1050px">Correlation shows that two measures moved together over a period. It doesn't isolate creative, offer, seasonality, pricing or competitor effects, and isn't a claim of causation. Use it to ask sharper questions, not to hand out trophies.</p>
+  <div class="ft"><span>04 / The Ads Yeti</span><span>adsyeti.com</span></div>
+</section>
+
+</body>
+</html>
