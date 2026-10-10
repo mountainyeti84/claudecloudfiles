@@ -1,0 +1,804 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Meta Growth Gap</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+/* Layout: an A4 book. Light reading pages, full-bleed dark openers for parts and chapters, Ads Yeti orange used sparingly. */
+:root{
+  --paper:#F6F7FA; --ink:#0B1020; --body:#2C3345; --muted:#677189; --line:#DCE0E9;
+  --night:#070B14; --navy:#0D1526; --card:#131C30; --soft:#A3ACC1; --dim:#6E7891;
+  --orange:#FF6B00; --orange-2:#FF8A3D; --rust:#C2410C; --red:#F87171;
+  --display:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@page{
+  size:A4; margin:22mm 21mm 24mm;
+  @bottom-left{content:"THE ADS YETI  ·  THE META GROWTH GAP";font-family:'JetBrains Mono',monospace;font-size:6.8pt;letter-spacing:.18em;color:#8b93a7}
+  @bottom-right{content:counter(page);font-family:'JetBrains Mono',monospace;font-size:7.5pt;color:#8b93a7}
+}
+@page full{margin:0;@bottom-left{content:none}@bottom-right{content:none}}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--paper)}
+body{background:var(--paper);color:var(--body);font-family:var(--display);font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+
+/* ---------- openers (cover, parts, chapters) ---------- */
+.opener{position:relative;overflow:hidden;background:var(--night);color:#F1F4FA;padding:72px max(24px,6vw) 64px;min-height:78vh;display:flex;flex-direction:column}
+.opener.navy{background:var(--navy)}
+.opener .bg{position:absolute;inset:0;background-size:cover;background-position:center}
+.opener .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,11,20,.25) 0%,rgba(7,11,20,.55) 45%,rgba(7,11,20,.96) 78%)}
+.opener .bg.side{left:45%}
+.opener .bg.side::after{background:linear-gradient(90deg,var(--night) 0%,rgba(7,11,20,.6) 35%,rgba(7,11,20,.15) 100%)}
+.opener>*:not(.bg){position:relative}
+.op-lbl{font-family:var(--mono);font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--orange-2)}
+.op-spacer{flex:1;min-height:60px}
+.op-num{font-family:var(--display);font-weight:800;font-size:150px;line-height:.8;letter-spacing:-.06em;color:transparent;-webkit-text-stroke:2px var(--orange);margin-bottom:28px}
+.op-title{font-weight:800;font-size:clamp(44px,7vw,74px);line-height:1;letter-spacing:-.04em;max-width:640px;text-wrap:balance}
+.op-dek{margin-top:22px;font-size:19px;line-height:1.55;color:#C4CBDA;max-width:560px}
+.op-foot{margin-top:48px;display:flex;justify-content:space-between;gap:16px;font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:#7D879F}
+.cover .op-title{font-size:clamp(52px,9vw,92px)}
+.cover .by{margin-top:28px;font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#C4CBDA}
+
+/* ---------- reading pages ---------- */
+.txt{max-width:700px;margin:0 auto;padding:64px 20px 72px}
+.lbl{font-family:var(--mono);font-weight:500;font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rust)}
+.txt h2{font-weight:800;font-size:36px;line-height:1.12;letter-spacing:-.03em;color:var(--ink);margin:10px 0 22px;text-wrap:balance}
+.txt h3{font-weight:700;font-size:22px;line-height:1.25;letter-spacing:-.02em;color:var(--ink);margin:38px 0 12px;text-wrap:balance}
+.txt p{margin:0 0 16px;orphans:3;widows:3}
+.txt p.lead{font-size:20px;line-height:1.55;color:#1d2436}
+.txt strong{color:var(--ink);font-weight:700}
+.txt ul.plain{margin:4px 0 18px 0;list-style:none}
+.txt ul.plain li{position:relative;padding-left:22px;margin-bottom:8px}
+.txt ul.plain li::before{content:"";position:absolute;left:2px;top:.72em;width:8px;height:2px;background:var(--orange)}
+.sec{break-before:page}
+
+.pull{margin:30px 0;padding:4px 0 4px 24px;border-left:3px solid var(--orange);font-size:24px;line-height:1.38;font-weight:600;letter-spacing:-.015em;color:var(--ink);break-inside:avoid}
+.pull cite{display:block;margin-top:10px;font-style:normal;font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:500}
+
+.box{background:var(--night);color:#C9D0DE;border-radius:14px;padding:24px 26px;margin:28px 0;break-inside:avoid}
+.box .lbl{color:var(--orange-2)}
+.box h4{font-size:19px;color:#fff;margin:8px 0 8px;letter-spacing:-.01em;line-height:1.3}
+.box p{color:#C9D0DE;margin-bottom:10px}
+.box p:last-child{margin-bottom:0}
+.box strong{color:#fff}
+
+.gap{border:1.5px dashed var(--rust);background:#FFF4EC;border-radius:12px;padding:16px 20px;margin:26px 0;break-inside:avoid;font-size:15px;line-height:1.55;color:#5a2a0c}
+.gap .lbl{display:block;margin-bottom:6px}
+.gap p{margin:0}
+
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:24px 0;break-inside:avoid}
+.stat{background:#fff;border:1px solid var(--line);border-top:3px solid var(--orange);border-radius:12px;padding:16px 16px 18px;min-width:0}
+.stat .n{font-weight:800;font-size:34px;letter-spacing:-.04em;line-height:1.05;color:var(--rust);font-variant-numeric:tabular-nums}
+.stat .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
+.stat .d{font-size:13.5px;line-height:1.45;margin-top:6px;color:var(--body)}
+
+.steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:24px 0;break-inside:avoid}
+.step{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 13px;min-width:0}
+.step .k{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.step b{display:block;font-size:15px;color:var(--ink);line-height:1.25;margin:6px 0 4px}
+.step span{display:block;font-size:13px;line-height:1.45}
+.step.hot{border-top:3px solid var(--orange)}
+.step.hot .k{color:var(--rust)}
+
+.flow{display:flex;flex-wrap:wrap;gap:8px 6px;align-items:center;margin:22px 0;break-inside:avoid}
+.flow span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 13px;font-size:14px;font-weight:600;color:var(--ink);white-space:nowrap}
+.flow i{font-style:normal;color:var(--orange);font-weight:700}
+.flow span.on{background:var(--orange);border-color:var(--orange);color:var(--ink)}
+
+/* leak sections */
+.leak-head{break-before:page;background:var(--night);color:#F1F4FA;border-radius:16px;padding:30px 30px 32px;margin:0 0 30px;position:relative;overflow:hidden}
+.leak-head .n{position:absolute;right:22px;top:-6px;font-weight:800;font-size:150px;line-height:1;letter-spacing:-.06em;color:transparent;-webkit-text-stroke:1.5px rgba(255,107,0,.55)}
+.leak-head .lbl{color:var(--orange-2)}
+.leak-head h2{color:#fff;margin:10px 0 10px;max-width:470px;font-size:34px}
+.leak-head p{color:#C4CBDA;margin:0;max-width:500px;font-size:16.5px}
+.trio{display:grid;gap:12px;margin:22px 0}
+.trio>div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;break-inside:avoid}
+.trio .lbl{color:var(--muted);font-size:11px}
+.trio p{margin:6px 0 0;font-size:16px}
+.trio ul.plain{margin:8px 0 0}
+.trio ul.plain li{font-size:16px;margin-bottom:5px}
+.ask{background:var(--orange);color:var(--ink);border-radius:14px;padding:20px 24px;margin:22px 0 8px;break-inside:avoid}
+.ask .lbl{color:#3a1a05}
+.ask p{font-size:21px;line-height:1.35;font-weight:700;letter-spacing:-.015em;margin:6px 0 0;color:var(--ink)}
+
+table{width:100%;border-collapse:collapse;font-size:15px;font-variant-numeric:tabular-nums}
+.tbl{overflow-x:auto;margin:22px 0;border-radius:12px;border:1px solid var(--line);break-inside:avoid}
+th{background:var(--night);color:#fff;text-align:left;padding:11px 14px;font-weight:600;font-size:14px}
+td{background:#fff;padding:11px 14px;border-top:1px solid var(--line);color:var(--body)}
+tr:nth-child(even) td{background:#F1F3F8}
+td.hl{color:var(--rust);font-weight:700}
+
+.checklist{margin:18px 0;counter-reset:q}
+.checklist li{list-style:none;display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line);break-inside:avoid}
+.checklist li::before{counter-increment:q;content:counter(q,decimal-leading-zero);font-family:var(--mono);font-size:12px;color:var(--rust);padding-top:4px;min-width:22px}
+.checklist li i{flex:0 0 20px;height:20px;border:2px solid var(--rust);border-radius:5px;margin-top:3px;order:3;margin-left:auto}
+.checklist li span{font-size:16px;line-height:1.5;color:#232a3b}
+
+.toc{list-style:none;margin:10px 0}
+.toc li{display:flex;gap:16px;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--line)}
+.toc li b{font-family:var(--mono);font-size:12px;color:var(--rust);min-width:56px;font-weight:500;letter-spacing:.1em}
+.toc li span{color:var(--ink);font-weight:600}
+.toc li em{font-style:normal;color:var(--muted);font-size:14.5px;margin-left:auto;text-align:right}
+.toc .part{border-bottom:none;padding-top:22px}
+.toc .part span{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:500}
+
+.sign{display:flex;gap:18px;align-items:center;margin-top:28px;break-inside:avoid}
+.sign .ph{width:74px;height:74px;border-radius:50%;background:url(assets/andy.jpg) center 20%/cover}
+.sign b{display:block;color:var(--rust);font-size:18px}
+.sign small{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+.cta-btns{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:22px}
+.btn{display:inline-block;background:var(--orange);color:var(--ink);font-weight:800;font-size:19px;padding:14px 24px;border-radius:12px;text-decoration:none}
+.btn-ph{display:inline-block;border:1.5px dashed #8b93a7;color:#C4CBDA;padding:13px 20px;border-radius:12px;font-size:15px}
+.logos{background:var(--night);border-radius:14px;padding:16px 22px;margin:22px 0;break-inside:avoid}
+.logos img{display:block;width:100%;height:auto}
+.src p{font-size:14.5px;line-height:1.55;margin-bottom:12px}
+.src b{color:var(--ink)}
+
+a{color:var(--rust)}
+:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+
+@media (max-width:640px){
+  body{font-size:16px}
+  .txt{padding:44px 16px 56px}
+  .txt h2{font-size:29px}
+  .stats{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .op-num{font-size:110px}
+  .leak-head .n{font-size:110px}
+  .pull{font-size:21px}
+}
+
+@media print{
+  html,body{background:#fff}
+  body{font-size:10.6pt;line-height:1.62}
+  .opener{page:full;break-before:page;break-after:page;width:210mm;height:296.6mm;min-height:0;padding:24mm 20mm 20mm}
+  .cover{break-before:auto}
+  .txt{max-width:none;padding:0;margin:0}
+  .txt h2{font-size:25pt}
+  .txt h3{font-size:15pt;margin-top:24pt}
+  .txt p.lead{font-size:13.5pt}
+  .pull{font-size:16pt}
+  .op-title{font-size:56pt}
+  .cover .op-title{font-size:68pt}
+  .op-dek{font-size:13.5pt}
+  .op-num{font-size:120pt}
+  .leak-head h2{font-size:24pt}
+  .ask p{font-size:15pt}
+  .stat .n{font-size:24pt}
+  .leak{font-size:10pt;line-height:1.55}
+  .leak-head{padding:18pt 20pt 20pt;margin-bottom:14pt}
+  .leak-head .n{font-size:96pt}
+  .leak h3{margin-top:4pt;font-size:13pt}
+  .trio{gap:7pt;margin:12pt 0}
+  .trio>div{padding:9pt 13pt}
+  .trio p,.trio ul.plain li{font-size:9.6pt;line-height:1.5}
+  .trio ul.plain li{margin-bottom:2pt}
+  .ask{padding:12pt 18pt;margin-top:12pt}
+  .ask p{font-size:13pt}
+  .toc li{padding:4.5pt 0}
+  .toc .part{padding-top:12pt}
+  .checklist li{padding:6.5pt 0}
+  .checklist li span{font-size:10pt}
+  .tbl{margin:12pt 0}
+  td,th{padding:6pt 10pt;font-size:9.6pt}
+  h2,h3,h4,.lbl{break-after:avoid}
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== COVER ===================== -->
+<section class="opener cover">
+  <div class="bg" style="background-image:url(assets/trekker.jpg)"></div>
+  <div class="op-lbl">// The Ads Yeti · A founder's case study</div>
+  <div class="op-spacer"></div>
+  <div class="op-title">The Meta Growth Gap.</div>
+  <p class="op-dek">Your Meta ads are working. But are they working hard enough? Ten years of spending my own money on Meta at EverTrek, and the places revenue quietly leaks out of accounts that look like they're performing.</p>
+  <div class="by">Andy Moore · Founder, EverTrek &amp; Head Ads Yeti</div>
+  <div class="op-foot"><span>adsyeti.com</span><span>Climb higher / make it count</span></div>
+</section>
+
+<!-- ===================== IS THIS YOU ===================== -->
+<section class="txt">
+  <div class="lbl">// Before you read on</div>
+  <h2>This was written for a fairly specific person.</h2>
+  <p class="lead">You're already spending properly on Meta. Probably £10k a month or more, possibly a lot more. Meta isn't an experiment in your business any more. It's a line in the budget that somebody senior has to defend every quarter.</p>
+  <p>If that's you, I'd guess some of the following sounds familiar:</p>
+  <ul class="plain">
+    <li>Platform ROAS looks fine. Revenue growth doesn't quite match it.</li>
+    <li>You've increased spend, and the extra money hasn't come back in proportion.</li>
+    <li>Meta, GA4 and your CRM tell three different stories, and at some point you stopped trying to make them agree.</li>
+    <li>Your agency or in-house team are good. You're just not sure anyone is really pushing any more.</li>
+    <li>Plenty of new ads go live every month. Not many new ideas do.</li>
+    <li>Someone has suggested "just increase the budget", and nobody could tell you exactly what the extra spend would buy.</li>
+    <li>You have a nagging feeling that part of the problem isn't in Ads Manager at all.</li>
+  </ul>
+  <p>If three or more of those landed, this is for you. Keep going.</p>
+  <h3>Who it isn't for</h3>
+  <p>If you're about to run your first Facebook ad, or you're after a list of bidding hacks and audience tricks, this isn't it, and I'd rather be honest about that now than waste twenty minutes of your evening. There are no campaign structures or optimisation recipes in here.</p>
+  <p>What's in here is a story, ten years of it, from the founder's side of the spreadsheet. And alongside it, the seven places I see revenue leaking out of established Meta accounts, how to tell whether it's happening in yours, and the questions worth asking before you spend another pound.</p>
+</section>
+
+<!-- ===================== NOTE FROM ANDY ===================== -->
+<section class="txt sec">
+  <div class="lbl">// A note from Andy</div>
+  <h2>The first Meta account I ever ran was spending my own money.</h2>
+  <p class="lead">Most marketing guides are written by people who've managed somebody else's budget. There's nothing wrong with that. Some of them are very good at it. But this one's a bit different, because for most of the last ten years, the money going into Meta was mine.</p>
+  <p>When I started EverTrek in 2016, I didn't have a marketing team. I was the marketing team. I built the website, wrote the emails, made the ads, ran the campaigns, built the sales funnels and then sat there wondering where the bloody bookings were.</p>
+  <p>EverTrek has since grown from a kitchen-table startup into a £3m+ adventure travel business, taking people to Everest Base Camp, Kilimanjaro, Machu Picchu and a lot of other places that involve walking uphill for a fortnight and calling it a holiday. Meta has been part of that the whole way through. Sometimes brilliantly. Sometimes expensively. Occasionally both in the same week.</p>
+  <p>And because it was my money, I developed a slightly awkward habit. Whenever the dashboard told me something was working, I'd ask the next question. Brilliant, lots of leads. How many of them booked? And if they didn't, where did we lose them?</p>
+  <p>That habit eventually turned into The Ads Yeti. Other founders started asking us to look at their accounts, and I noticed something that genuinely surprised me. Businesses several times our size, with agencies, in-house teams and far bigger budgets, had exactly the same leaks we'd had. They were just more expensive.</p>
+  <div class="pull">At £10k a month, a 20% leak costs you £24k a year. At £50k a month, it's £120k. Nobody sends you an invoice for it.</div>
+  <h3>How to read this</h3>
+  <p><strong>Part one</strong> is the EverTrek story, told through what we learned about Meta along the way. It's honest, so it includes the bits that went wrong.</p>
+  <p><strong>Part two</strong> is the Meta Growth Gap: seven places revenue leaks out of established accounts, even when the campaigns look like they're performing. For each one I'll show you where it showed up at EverTrek, what it looks like at your scale, the warning signs, and the one question I'd want answered.</p>
+  <p><strong>Part three</strong> is for whoever signs off the budget. The maths of spending more versus getting more, a self-audit, and what I'd look at first if your account were my money.</p>
+  <p>One more thing, in the interest of honesty. I'm going to tell you what we see and why it matters. I'm deliberately not going to give you a step-by-step fix for each leak. Partly because the right fix depends entirely on your account and getting it wrong is expensive. And partly because, if I'm honest, that's the bit we do for a living. 😜</p>
+  <div class="sign"><div class="ph" role="img" aria-label="Andy Moore"></div><div><b>Andy</b><small>Founder, EverTrek · Head Ads Yeti</small></div></div>
+</section>
+
+<!-- ===================== CONTENTS ===================== -->
+<section class="txt sec">
+  <div class="lbl">// Inside</div>
+  <h2>Contents</h2>
+  <ul class="toc">
+    <li class="part"><span>Part one · The founder's side of the spreadsheet</span></li>
+    <li><b>01</b><span>I was the marketing team</span><em>2016, 14p leads</em></li>
+    <li><b>02</b><span>Meta finds people. It doesn't book them.</span><em>Leads, guides and follow-up</em></li>
+    <li><b>03</b><span>"Are we live?"</span><em>Founder-led creative</em></li>
+    <li><b>04</b><span>The bit between booking and going</span><em>Customer value</em></li>
+    <li><b>05</b><span>When the product disappeared</span><em>March 2020</em></li>
+    <li><b>06</b><span>Turning the dial</span><em>£4k to £14k a month</em></li>
+    <li><b>07</b><span>The £18,000 lead</span><em>A journey no report saw</em></li>
+    <li><b>08</b><span>Why The Ads Yeti exists</span><em>Same leaks, bigger bills</em></li>
+    <li class="part"><span>Part two · The Meta Growth Gap</span></li>
+    <li><b>Leak 1</b><span>Media efficiency</span><em>Paying for sales you'd get anyway</em></li>
+    <li><b>Leak 2</b><span>Creative</span><em>New ads, no new ideas</em></li>
+    <li><b>Leak 3</b><span>Offer</span><em>Asking Meta to fix the proposition</em></li>
+    <li><b>Leak 4</b><span>Landing experience</span><em>Paying twice for the same click</em></li>
+    <li><b>Leak 5</b><span>Lead quality</span><em>Cheap isn't the same as valuable</em></li>
+    <li><b>Leak 6</b><span>Follow-up &amp; sales</span><em>The gap nobody owns</em></li>
+    <li><b>Leak 7</b><span>Measurement</span><em>Four versions of the truth</em></li>
+    <li class="part"><span>Part three · For whoever signs off the budget</span></li>
+    <li><b>09</b><span>Spend more, or get more?</span><em>The maths</em></li>
+    <li><b>10</b><span>Meta performance isn't just a Meta problem</span><em>The whole route</em></li>
+    <li><b>11</b><span>The self-audit</span><em>Twelve questions</em></li>
+    <li><b>12</b><span>If this were my money</span><em>Where I'd look first</em></li>
+  </ul>
+</section>
+
+<!-- ===================== PART ONE ===================== -->
+<section class="opener">
+  <div class="bg side" style="background-image:url(assets/mountain-right.jpg)"></div>
+  <div class="op-lbl">// Part one</div>
+  <div class="op-spacer"></div>
+  <div class="op-title">The founder's side of the spreadsheet.</div>
+  <p class="op-dek">How EverTrek learned to make Meta pay, one slightly expensive lesson at a time.</p>
+  <div class="op-foot"><span>Chapters 01–08</span><span>The Ads Yeti</span></div>
+</section>
+
+<!-- ===================== CH 1 ===================== -->
+<section class="opener navy">
+  <div class="op-lbl">// Chapter 01 · 2016</div>
+  <div class="op-spacer"></div>
+  <div class="op-num">01</div>
+  <div class="op-title">I was the marketing team.</div>
+  <p class="op-dek">Leads cost 14p. Lookalikes were witchcraft. And the dashboard was full of good news that the bank account didn't always agree with.</p>
+</section>
+<section class="txt">
+  <p class="lead">2016 was a wonderful time to learn Facebook advertising, mainly because it was very easy to convince yourself you were a genius.</p>
+  <p>Facebook leads cost about 14p. A 1% Lookalike Audience felt like actual witchcraft. And we all thought Messenger bots were about to replace email. (OK, I did. A little.) What a time to be alive.</p>
+  <p>I was doing all of it myself. Building the website, writing the emails, making the ads, running the campaigns, setting up the funnels. There was no marketing department to hand anything to, no agency, no analyst. Just me, a laptop and a growing suspicion that I'd started a trekking company and accidentally become a marketer.</p>
+  <p>The ads worked, in the sense that Ads Manager was full of lovely numbers. CTR up. CPC down. Leads coming in. Engagement flying. If you'd judged EverTrek's marketing purely on what Facebook told me, it was going brilliantly.</p>
+  <p>But it was my money. And when it's your money, you're not really interested in CTR. You want to know what came out the other side.</p>
+  <div class="pull">The dashboard is full of good news. The bank account is where you find out whether it's true.</div>
+  <h3>A trek isn't an impulse purchase</h3>
+  <p>Part of what made this tricky is what we sell. A trek to Everest Base Camp costs thousands of pounds. It needs months of training, usually time off work, and it comes with a fair amount of fear attached. Am I fit enough? Will I cope with the altitude? Is it safe? Who am I going to be sharing a tent with?</p>
+  <p>Nobody books that from a single Reel on a Tuesday night. They see something, think "I'd bloody love to do that", and then spend weeks or months talking themselves into it (or out of it). They ask a friend. They Google us. They read reviews. They look at their bank balance. They forget about us. They come back.</p>
+  <p>So from very early on, it was obvious that Meta was never going to be the whole sale. Its job was to <strong>start</strong> something. The question that's followed me ever since is how you tell whether it did.</p>
+  <h3>The question that shaped everything after it</h3>
+  <p>Not "what did Facebook say worked?" but "what actually made someone book a trip?"</p>
+  <p>It sounds obvious written down. In practice, almost every report I've ever been sent, by platforms, by tools, and later by agencies, answers the first question and quietly hopes you won't ask the second.</p>
+  <div class="box">
+    <div class="lbl">What this looks like at £10k+ a month</div>
+    <h4>The 14p days are gone. The trap isn't.</h4>
+    <p>At scale it just looks more sophisticated. A healthy platform ROAS. A cost per lead that's on target. A weekly report full of green arrows. The question underneath is exactly the one I was asking in 2016: <strong>how much of that turned into revenue that wouldn't have happened anyway?</strong></p>
+  </div>
+  <div class="gap"><span class="lbl">// Andy to add</span><p>Your first proper Meta win and your first proper Meta disaster, 2016–17. Roughly what you were spending, what the ad was offering, and the moment you realised a lead and a booking were two very different things.</p></div>
+</section>
+
+<!-- ===================== CH 2 ===================== -->
+<section class="opener navy">
+  <div class="op-lbl">// Chapter 02 · The lead isn't the sale</div>
+  <div class="op-spacer"></div>
+  <div class="op-num">02</div>
+  <div class="op-title">Meta finds people. It doesn't book them.</div>
+  <p class="op-dek">Why we stopped asking strangers to buy a trek, and started obsessing over everything that happened after the form.</p>
+</section>
+<section class="txt">
+  <p class="lead">Asking a stranger on Facebook to hand over thousands of pounds for a trek is a big ask. So we stopped asking.</p>
+  <p>Instead, we asked for something much smaller. Download a guide. Get the information. Find out what's actually involved in getting to Base Camp. It's a small, useful first yes, and it gave Meta a much easier job: find people who are genuinely curious, and get them to put their hand up.</p>
+  <p>That bit worked. It still works. But it moved the problem rather than solving it. Because now we had leads, lots of them, and a lead is not a booking. A lead is the start of a conversation. Sometimes a very long one.</p>
+  <h3>Following the lead home</h3>
+  <p>This is where I think EverTrek's marketing really started to grow up. We stopped thinking about Meta as a thing that produced leads, and started thinking about the whole route a person took:</p>
+  <div class="flow"><span>Ad</span><i>→</i><span>Lead</span><i>→</i><span>Qualified lead</span><i>→</i><span>Conversation</span><i>→</i><span>Customer</span><i>→</i><span class="on">Revenue</span></div>
+  <p>And once you look at it that way, you notice that most of the money is made or lost in the bits after Meta. What did they get after they downloaded the guide? Did anyone speak to them? How quickly? Did they come back? Did anything tell us when they did?</p>
+  <p>When the numbers weren't working, I didn't really care which department owned the problem. I just wanted to find it. Sometimes it was the ads. Quite often, I found, it wasn't.</p>
+  <div class="pull">If we're generating loads of cheap leads and nobody buys, that's not success. It's just a cheaper way of not selling anything.</div>
+  <h3>Guide first, transaction second</h3>
+  <p>There's another side to this that took me longer to appreciate. We repeatedly advised people based on what was right for them rather than what created the quickest sale. We'd tell someone to train for longer before committing. We once told a parent, kindly, that their 12-year-old probably wasn't ready for a major trek yet. Some of those people came back years later, when the timing was right, and booked.</p>
+  <p>Brilliant for the brand. Terrible for a 30-day attribution window. Because if you'd judged those leads after a month, every one of them would have looked like a failure. "Didn't convert. Bad lead. Move on."</p>
+  <p>Except they weren't bad leads. They were good leads that weren't ready yet. And I've become slightly obsessed with the difference.</p>
+  <div class="box">
+    <div class="lbl">What this looks like at £10k+ a month</div>
+    <h4>The handover is where the money goes missing.</h4>
+    <p>In bigger businesses, the route from ad to revenue usually crosses at least two teams and three systems. The agency reports on leads. Sales reports on deals. The CRM sits in the middle. <strong>The gap between them often belongs to nobody</strong>, and it's very often where the biggest leak in the whole account is hiding.</p>
+  </div>
+  <div class="gap"><span class="lbl">// Andy to add</span><p>When EverTrek first had someone properly following up Meta leads (calls, WhatsApp), and what changed in the booking rate when they did. Rough numbers are fine: lead-to-booking %, how quickly leads were contacted before and after.</p></div>
+</section>
+
+<!-- ===================== CH 3 ===================== -->
+<section class="opener navy">
+  <div class="op-lbl">// Chapter 03 · Founder-led creative</div>
+  <div class="op-spacer"></div>
+  <div class="op-num">03</div>
+  <div class="op-title">"Are we live?"</div>
+  <p class="op-dek">The creative that did the most for EverTrek didn't look much like an ad. It looked like Dave's haircut and a pair of Meindl Bhutans.</p>
+</section>
+<section class="txt">
+  <p class="lead">Alongside the ads, we just kept turning up. And I've only recently realised how much of the heavy lifting that did.</p>
+  <p>Regular Facebook Lives. Tuesday Tune-Ins. Q&amp;As. Podcasts. Videos from Nepal. A community group where people asked questions and, increasingly, answered each other's. Over time, customers started calling themselves EverTrekkers.</p>
+  <p>None of it was particularly polished. If you watched enough of our Lives you'll have heard "Are we live...?" more times than any human reasonably should. You'll have seen the tech gremlins make regular appearances. You'll have learned that, whatever the kit question, there was a surprisingly good chance the answer was "Meindl Bhutan". And you'll have witnessed some of Dave's more questionable haircut choices over the years.</p>
+  <p>Somehow, one of those Lives ended up with 27,000 people watching it. I'm still not entirely convinced they all meant to be there.</p>
+  <h3>Familiar beats polished</h3>
+  <p>Here's why it mattered commercially. By the time someone was actually ready to book, we weren't just another trekking company they'd found on Google. We were those slightly strange people they'd been watching on Facebook for the last six months.</p>
+  <p>And when you're asking someone to hand over thousands of pounds and trust you to get them safely halfway round the world and up a bloody great mountain, that matters a lot.</p>
+  <p>Little rituals grew out of it that nobody planned. The Yeti Pose. EverTrek neck buffs turning up in photos all over the world (some of them in places a neck buff was never designed to cover). People commenting "bingo" when Andy and Dave said one of their usual phrases. Customers stopped just consuming the content and started joining in.</p>
+  <div class="pull">"Just showing up, having a chat and trying to be useful. Turns out that might have been marketing too."</div>
+  <h3>What it did for the ads</h3>
+  <p>This is the bit that's easy to miss if you think of "brand" and "performance" as separate budgets. The founder-led content gave our Meta ads something no competitor could copy. Real people, answering real worries, in a voice people already recognised.</p>
+  <p>It also taught me that creative has more than one job. Most ads only ever try to do the first:</p>
+  <div class="steps" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+    <div class="step hot"><span class="k">Job 1</span><b>Inspiration</b><span>Make the outcome, and the person they'll become, feel real.</span></div>
+    <div class="step hot"><span class="k">Job 2</span><b>Reassurance</b><span>Answer the scary questions early: fitness, safety, cost.</span></div>
+    <div class="step hot"><span class="k">Job 3</span><b>Proof</b><span>Let real customers make the risk feel survivable.</span></div>
+    <div class="step hot"><span class="k">Job 4</span><b>Continuity</b><span>Carry the same story into search, pages and sales.</span></div>
+  </div>
+  <p>A personalised video from a real person could set us apart from the four or five other companies someone was considering. Not because it was clever, but because it was human, and none of the others bothered.</p>
+  <div class="box">
+    <div class="lbl">What this looks like at £10k+ a month</div>
+    <h4>You don't need a founder on Facebook Live every Tuesday.</h4>
+    <p>But you do need something only you can say. The problem in most mature accounts isn't a lack of ads. It's a lack of <strong>new reasons to buy</strong>. Lots of fresh edits, hooks and formats, all saying the same thing they said last year.</p>
+  </div>
+  <div class="gap"><span class="lbl">// Andy to add</span><p>Two or three real EverTrek ads or concepts that were big winners over the years: the hook, the format, and roughly what happened. And one that you were sure would fly and absolutely didn't.</p></div>
+</section>
+
+<!-- ===================== CH 4 ===================== -->
+<section class="opener navy">
+  <div class="op-lbl">// Chapter 04 · Customer value</div>
+  <div class="op-spacer"></div>
+  <div class="op-num">04</div>
+  <div class="op-title">The bit between booking and going.</div>
+  <p class="op-dek">Why the months after someone pays aren't dead time, and what an 80-page Trip Planner has to do with your cost per acquisition.</p>
+</section>
+<section class="txt">
+  <p class="lead">In the early years, there wasn't much between someone paying their deposit and turning up at the airport. Then the feedback started telling us that was a problem.</p>
+  <p>Around 2018, feedback from an Everest Base Camp group told us people didn't feel prepared enough before they left. One customer mentioned a detailed physical binder she'd once had from another travel company.</p>
+  <p>We could have got defensive. Instead we built a personalised Trip Planner. It ended up being about 80 pages long, with the customer's name on it, fitness plans, maps and practical advice. People carried it with them, scribbled notes in it, photographed it and shared it online.</p>
+  <p>Over time we filled the rest of that gap too. Preparation emails, personalised videos, an app with maps and countdowns, Ask a Yeti, timed notifications, arrival messages, a members' area, training content, Tuesday Tune-In, podcasts. None of it came from a master plan. Together it became the glue between EverTrek and the customer.</p>
+  <div class="pull">The space between purchase and delivery isn't dead time. It's where the relationship actually gets built.</div>
+  <h3>Why a Meta person should care</h3>
+  <p>Because the first booking isn't the whole value of a customer, and most ad accounts are optimised as if it is.</p>
+  <p>A customer who feels looked after comes back. They tell their friends. They post the photo with the buff. They leave the review that makes the next stranger's decision easier. They turn up in the comments of your ads answering other people's questions for you. Every one of those things makes your next customer cheaper to acquire, and almost none of them appear in the ad account.</p>
+  <p>So if you're judging Meta on first-purchase value alone, there's a good chance you're undervaluing the campaigns that bring in your best customers, and overvaluing the ones that bring in your cheapest.</p>
+  <div class="box">
+    <div class="lbl">What this looks like at £10k+ a month</div>
+    <h4>Not all customers are worth the same, but your ad account thinks they are.</h4>
+    <p>Most accounts optimise towards the first conversion. Fewer know which campaigns produce customers who come back, spend more, or refer others. <strong>If you can't tell your highest-value customers from your cheapest ones, neither can Meta.</strong></p>
+  </div>
+  <div class="gap"><span class="lbl">// Andy to add</span><p>EverTrek's repeat-customer rate and how much business comes from referrals or returning EverTrekkers, even roughly. A real example of one customer who's booked several trips would bring this to life.</p></div>
+</section>
+
+<!-- ===================== CH 5 ===================== -->
+<section class="opener" style="background:var(--orange);color:var(--ink)">
+  <div class="op-lbl" style="color:#3a1a05">// Chapter 05 · March 2020</div>
+  <div class="op-spacer"></div>
+  <div class="op-num" style="-webkit-text-stroke-color:var(--ink)">05</div>
+  <div class="op-title">When the product disappeared.</div>
+  <p class="op-dek" style="color:#2a1404">85 customers were due to fly to Nepal the next day. Then the world shut. What happens to a brand, and an ad account, when you've got nothing to sell?</p>
+</section>
+<section class="txt">
+  <p class="lead">I was on a ski trip in Morzine when it became real. I'd just come off a brilliant day on the slopes, and by the evening the mood had completely changed.</p>
+  <p>Around 85 EverTrek customers were due to fly to Nepal the following day. The team headed into the office to start calling them. Around 14 had already travelled and ended up stuck in Nepal, and we had to work with embassies on charter arrangements to get them home.</p>
+  <p>I'll be honest, I had a proper wobble. The fear wasn't really about ads or marketing. It was much simpler: if everyone wanted their money back, would EverTrek still exist? I left the trip early and flew home the next day.</p>
+  <h3>We couldn't promise a date. Only how we'd behave.</h3>
+  <p>Once we got past the initial panic, the question changed. Rather than "how do we protect the business?", it became "what's the simplest, fairest thing for the customer?"</p>
+  <p>We stripped out cancellation and deferral fees and made it easy to keep your trip and travel whenever it became possible again. Within the first week, we started live Q&amp;As on Facebook. No formal updates from a faceless company. Just us, stuck at home like everyone else, answering what we could and being honest about what we didn't know.</p>
+  <p>For roughly 20 months we couldn't take anyone trekking. And more than 95% of the customers offered that route stayed with us.</p>
+  <div class="stats">
+    <div class="stat"><span class="k">Due to fly</span><div class="n">85</div><div class="d">customers heading to Nepal the next day</div></div>
+    <div class="stat"><span class="k">No trips</span><div class="n">~20 mo</div><div class="d">without being able to operate normally</div></div>
+    <div class="stat"><span class="k">Stayed</span><div class="n">95%+</div><div class="d">of customers offered a postponement</div></div>
+  </div>
+  <div class="pull">COVID didn't create the loyalty. It revealed it.</div>
+  <h3>What this taught me about ad accounts</h3>
+  <p>For years, the Lives and the community and the Trip Planner had sat firmly in the "nice to have" column. None of it had a ROAS. None of it showed up in a weekly performance report.</p>
+  <p>And then, when the product disappeared entirely, it turned out to be the thing holding the business up.</p>
+  <p>You can't manufacture loyalty during a crisis. You can only make withdrawals from trust you've already deposited. And I think the same is true, in a much less dramatic way, of every ad account. The accounts that scale well are rarely the ones with the cleverest campaign structure. They're the ones where the brand has already done enough work that Meta is introducing people to something they're quite happy to trust.</p>
+  <div class="box">
+    <div class="lbl">What this looks like at £10k+ a month</div>
+    <h4>Brand and performance aren't two different budgets. They're one system.</h4>
+    <p>When a business cuts the stuff that "doesn't have a ROAS", it usually doesn't notice straight away. It notices six months later, when acquisition costs creep up and nobody can quite say why.</p>
+  </div>
+  <div class="gap"><span class="lbl">// Andy to add</span><p>What happened to EverTrek's Meta spend during COVID (paused completely? kept community content running?), and what happened when you switched ads back on in 2021–22. Did the warmed-up audience make the restart cheaper? This is a big gap in the story and a strong one for this audience.</p></div>
+  <div class="gap"><span class="lbl">// Andy to add · bridging chapter</span><p>The post-COVID surge and the years in between (roughly 2021–2024): the rush of rebookings, iOS 14 and Meta's tracking changes, rising costs, hiring, any investment, and the moment things that used to work stopped working. This could become its own chapter, "The rules changed", and it's the period most £10k+ advertisers will recognise.</p></div>
+</section>
+
+<!-- ===================== CH 6 ===================== -->
+<section class="opener navy">
+  <div class="op-lbl">// Chapter 06 · Scaling</div>
+  <div class="op-spacer"></div>
+  <div class="op-num">06</div>
+  <div class="op-title">Turning the dial.</div>
+  <p class="op-dek">We tripled Meta spend in six months. Cost per lead didn't move. And the most interesting result didn't show up in Meta at all.</p>
+</section>
+<section class="txt">
+  <p class="lead">Between June and November, we took EverTrek's monthly Meta spend from £4k to £14k. That's usually the point where costs start running away from you. They didn't.</p>
+  <div class="stats">
+    <div class="stat"><span class="k">Monthly Meta spend</span><div class="n">£4k→£14k</div><div class="d">June to November</div></div>
+    <div class="stat"><span class="k">Paid social leads</span><div class="n">3,500+</div><div class="d">a month, up from 800–1,000</div></div>
+    <div class="stat"><span class="k">Cost per lead</span><div class="n">£4→£4</div><div class="d">held flat while spend tripled</div></div>
+  </div>
+  <p>I'd love to tell you that was down to a brilliant campaign structure. I think it had a lot more to do with everything in the previous five chapters. Years of trust deposits change what scaling feels like. Meta was introducing people to a brand that a lot of them had already half-heard of, from a friend, a Live, a photo with a buff in it.</p>
+  <h3>The bit that didn't stay inside Meta</h3>
+  <p>Here's what really got my attention. As Meta spend climbed, our organic and paid search climbed with it. Search volume, leads and conversions were all up.</p>
+  <p>Which created a slightly ridiculous situation. Meta said it did it. Google said it did it. GA4 had another idea entirely. Meanwhile I'm sat there as the business owner thinking: I don't really care who gets the trophy. I just want to know what actually helped us sell the trip.</p>
+  <div class="pull">Meta captured the interest. Search converted the intent. And each of them, quite reasonably, claimed the sale.</div>
+  <h3>Why this matters if you're spending £10k+</h3>
+  <p>Imagine you'd looked at that period through a typical channel report. Google's cost per acquisition looks lovely. Meta's looks expensive, because a lot of the people it introduced to EverTrek came back later through a Google search. Someone in a budget meeting quite reasonably says, "Why don't we move some of the Meta money into Google?"</p>
+  <p>And if you did, I think you'd slowly starve the very thing that was feeding Google in the first place. Not straight away. Four to eight weeks later, when branded search softens and nobody connects it to the budget decision.</p>
+  <p>This is one example, and I'm careful not to build a theory on one account. Which is exactly why we went and looked at 55 more. More on that in chapter 08.</p>
+  <div class="gap"><span class="lbl">// Andy to add</span><p>Which year the June–November scale-up was, and what bookings and revenue did over the same period (not just leads). For a £30m reader, revenue and blended acquisition cost are the numbers that will make this land.</p></div>
+</section>
+
+<!-- ===================== CH 7 ===================== -->
+<section class="opener navy">
+  <div class="op-lbl">// Chapter 07 · Attribution</div>
+  <div class="op-spacer"></div>
+  <div class="op-num">07</div>
+  <div class="op-title">The £18,000 lead.</div>
+  <p class="op-dek">A Facebook lead that any 30-day report would have written off, and what happened next.</p>
+</section>
+<section class="txt">
+  <p class="lead">This was a cool little customer journey I spotted recently, and it's become my favourite way of explaining why I don't trust short reporting windows.</p>
+  <p>Not long ago, someone downloaded one of our guides from a Facebook ad. Then nothing. They didn't book. They didn't speak to sales. They didn't suddenly hand over thousands of pounds because Meta had shown them a particularly lovely picture of Everest. They just carried on with their life.</p>
+  <p>But they stayed in our world. They got our emails. They saw our content. They had a look around now and again.</p>
+  <p>Months later, they came back and downloaded something else. This time, that second download triggered our sales team. We sent them a WhatsApp. Had a chat. And about a week later, they made nearly £18,000 worth of bookings.</p>
+  <div class="steps">
+    <div class="step"><span class="k">Day 0</span><b>Facebook ad</b><span>Downloads a guide. Doesn't buy.</span></div>
+    <div class="step"><span class="k">Months pass</span><b>Stays in our world</b><span>Emails, content. Nothing in any report.</span></div>
+    <div class="step"><span class="k">The return</span><b>Downloads again</b><span>Triggers the sales team.</span></div>
+    <div class="step"><span class="k">The chat</span><b>A WhatsApp</b><span>A human conversation.</span></div>
+    <div class="step hot"><span class="k">A week later</span><b>~£18,000</b><span>in bookings.</span></div>
+  </div>
+  <p>Now, it's one customer journey. I'm not going to build a marketing strategy around one example, and I'm definitely not suggesting Facebook gets to stick £18k in its little attribution column and take the afternoon off.</p>
+  <p>But I love journeys like this because they show how messy buying really is. If we'd judged that original lead after 30 days, we'd have said exactly what most reports say. Didn't convert. Move on.</p>
+  <div class="pull">There's a big difference between a bad lead and a good lead that isn't ready yet. Most reporting can't tell them apart.</div>
+  <h3>Four things had to go right</h3>
+  <p>Notice how many separate pieces had to work for that £18k to happen. The ad had to find the right person. The guide had to be worth downloading. The emails had to keep us in their life for months without annoying them. And something had to notice when they came back, so a human could have a conversation at exactly the right moment.</p>
+  <p>Only the first of those lives in Ads Manager. If any of the other three had been broken, Meta would have looked like it failed, and someone would probably have cut the campaign that found the customer.</p>
+  <div class="box">
+    <div class="lbl">What this looks like at £10k+ a month</div>
+    <h4>Your best Meta customers might be invisible to your Meta reporting.</h4>
+    <p>The longer and more considered your sale, the more of your real Meta value sits outside the attribution window. <strong>Do you know what happens to a Meta lead that isn't ready to buy for six months?</strong></p>
+  </div>
+</section>
+
+<!-- ===================== CH 8 ===================== -->
+<section class="opener navy">
+  <div class="op-lbl">// Chapter 08 · Same leaks, bigger bills</div>
+  <div class="op-spacer"></div>
+  <div class="op-num">08</div>
+  <div class="op-title">Why The Ads Yeti exists.</div>
+  <p class="op-dek">I never intended to start an agency. Which is probably part of the reason I ended up starting one.</p>
+</section>
+<section class="txt">
+  <p class="lead">Most of what I know about paid social didn't come from running campaigns for clients. It came from needing the campaigns to work in my own business.</p>
+  <p>After a few years of other founders asking "how are you doing that?", I started helping a handful of them. Then a few more. And somewhere amongst all of that, The Ads Yeti appeared.</p>
+  <p>Today we work with businesses like Bon Voyage and Absolute Escapes in travel, and Tŷ Hafan outside it. Between EverTrek and Bon Voyage alone, the work has generated hundreds of thousands of pounds in bookings and leads. But the thing I find most useful isn't the results. It's what I keep seeing when I open up an account for the first time.</p>
+  <h3>Same problems, bigger numbers</h3>
+  <p>I expected bigger businesses to have this stuff sorted. More budget, more people, proper agencies. Some of them do. But a lot of them have exactly the same leaks EverTrek had in its scrappier years. They're just better hidden, and considerably more expensive.</p>
+  <p>The campaigns are usually fine. Sometimes they're very good. The problem is almost always somewhere in the system around them: the creative has stopped producing new ideas, the offer is asking too much, the follow-up is slow, the measurement is quietly sending budget to the wrong places.</p>
+  <h3>So we went and looked properly</h3>
+  <p>After the EverTrek scale-up, I wanted to know whether what we'd seen between Meta and Search was a fluke. So we analysed weekly Meta and Google Ads data from 55 UK ecommerce and retail brands across travel, retail, fashion, home, fitness and services. Three patterns kept showing up:</p>
+  <div class="stats">
+    <div class="stat"><span class="k">Demand generator</span><div class="n">73%</div><div class="d">of accounts: more Meta spend moved with more branded search, PPC clicks and conversions.</div></div>
+    <div class="stat"><span class="k">Efficiency multiplier</span><div class="n">~30%</div><div class="d">of accounts: more Meta spend moved with better PPC conversion rates and ROAS.</div></div>
+    <div class="stat"><span class="k">Delayed response</span><div class="n">~25%</div><div class="d">of accounts: PPC efficiency dipped first, then improved three to four weeks later.</div></div>
+  </div>
+  <p>Correlation isn't causation, and I'm careful to say so. But when a pattern repeats across 55 accounts and matches independent holdout testing (Meta's own studies with Brainlabs found audiences who saw Meta ads went on to make 19% more search visits than a matched group who didn't), it's earned the right to be taken seriously.</p>
+  <div class="pull">The job isn't to make one platform look good. It's to find out what's actually driving growth. That's the bit I love.</div>
+  <p>Everything I've learned, at EverTrek and since, boils down to seven places where revenue leaks out of Meta accounts that look like they're working. That's part two.</p>
+  <div class="logos"><img src="assets/trusted-logos.jpg" alt="EverTrek, Bon Voyage, Absolute Escapes and Tŷ Hafan logos"></div>
+  <div class="gap"><span class="lbl">// Andy to add</span><p>When The Ads Yeti officially launched, and one client story (with their permission): what you found in the first few weeks of looking at their account and what changed. Bon Voyage or Absolute Escapes with a real before-and-after would be the strongest proof in the whole book for this audience.</p></div>
+</section>
+
+<!-- ===================== PART TWO ===================== -->
+<section class="opener">
+  <div class="bg side" style="background-image:url(assets/mountain-dusk.jpg)"></div>
+  <div class="op-lbl">// Part two</div>
+  <div class="op-spacer"></div>
+  <div class="op-title">The Meta Growth Gap.</div>
+  <p class="op-dek">Seven places revenue leaks out of established Meta accounts, even when the campaigns look like they're performing.</p>
+  <div class="op-foot"><span>Leaks 1–7</span><span>The Ads Yeti</span></div>
+</section>
+
+<section class="txt">
+  <div class="lbl">// How to read the leaks</div>
+  <h2>Your Meta ads might be working. The question is whether they're working hard enough.</h2>
+  <p class="lead">I want to be clear about something before we start. This isn't a list of things your agency is doing wrong.</p>
+  <p>Most of the accounts we look at are being run competently. The campaigns are live, the reports go out, the numbers are broadly where someone said they'd be. That's exactly why these leaks survive. Nothing's on fire. Nobody's looking for them.</p>
+  <p>Every one of the seven below showed up at EverTrek at some point, usually when I thought things were going nicely. For each one, I'll show you:</p>
+  <div class="trio">
+    <div><span class="lbl">What we see</span><p>How the leak usually shows up in an established account.</p></div>
+    <div><span class="lbl">Why it matters commercially</span><p>What it's actually costing, in money rather than metrics.</p></div>
+    <div><span class="lbl">Warning signs</span><p>How you'd spot it from where you sit, without opening Ads Manager.</p></div>
+  </div>
+  <p>And then one question. Not a fix. A question you can put to your team, your agency or yourself, that should be easy to answer confidently if everything's fine.</p>
+  <h3>What a leak actually costs</h3>
+  <p>It's worth doing the maths once, because a "small" inefficiency stops being small surprisingly quickly at this level of spend.</p>
+  <div class="tbl"><table>
+    <tr><th>Monthly Meta spend</th><th>Annual spend</th><th>10% leak</th><th>20% leak</th></tr>
+    <tr><td>£10,000</td><td>£120,000</td><td class="hl">£12,000</td><td class="hl">£24,000</td></tr>
+    <tr><td>£30,000</td><td>£360,000</td><td class="hl">£36,000</td><td class="hl">£72,000</td></tr>
+    <tr><td>£50,000</td><td>£600,000</td><td class="hl">£60,000</td><td class="hl">£120,000</td></tr>
+    <tr><td>£100,000</td><td>£1,200,000</td><td class="hl">£120,000</td><td class="hl">£240,000</td></tr>
+  </table></div>
+  <p>That's media spend doing nothing useful, every year, before you count the revenue it should have produced. And in my experience, most accounts don't have one leak. They have a bit of all seven.</p>
+</section>
+
+<!-- ===================== LEAK 1 ===================== -->
+<section class="txt leak">
+  <div class="leak-head"><span class="n">1</span><div class="lbl">// Leak 1 of 7 · Media efficiency</div><h2>Paying for sales you'd have got anyway.</h2><p>Budget follows whatever the platform reports most favourably, which isn't always where new revenue comes from.</p></div>
+  <h3>Where it showed up at EverTrek</h3>
+  <p>In the early days, I'd move money towards whatever looked cheapest. Retargeting always looked brilliant. Of course it did. It was full of people who'd already downloaded a guide, watched a Live and were halfway to booking. Meanwhile the campaigns finding brand new people looked expensive, because they were doing the hard bit.</p>
+  <p>It took me longer than I'd like to admit to realise that the cheap-looking campaigns were often taking credit for customers the expensive-looking ones had found.</p>
+  <div class="trio">
+    <div><span class="lbl">What we see</span><p>A growing share of spend going to audiences who already know the brand: retargeting, existing customers, people who were going to buy anyway. Prospecting gets trimmed in soft months because it's "the weakest line on the sheet". Platform ROAS stays healthy throughout.</p></div>
+    <div><span class="lbl">Why it matters commercially</span><p>You can have a great ROAS and be mostly paying to be present at sales you'd have made anyway. Meanwhile the activity creating next quarter's customers is quietly starved, and the bill for that arrives months later as rising acquisition costs nobody can explain.</p></div>
+    <div><span class="lbl">Warning signs</span><ul class="plain"><li>ROAS stable or rising while new-customer numbers flatten or fall.</li><li>Any attempt to scale spend quickly seems to "break" performance.</li><li>Branded search softens a month or two after prospecting is cut.</li></ul></div>
+  </div>
+  <div class="ask"><div class="lbl">The question to ask</div><p>If Meta disappeared tomorrow, how much of the revenue it currently claims would actually disappear?</p></div>
+</section>
+
+<!-- ===================== LEAK 2 ===================== -->
+<section class="txt leak">
+  <div class="leak-head"><span class="n">2</span><div class="lbl">// Leak 2 of 7 · Creative</div><h2>Lots of new ads. Not many new ideas.</h2><p>Creative volume goes up, performance doesn't, and the usual response is to make more of the same.</p></div>
+  <h3>Where it showed up at EverTrek</h3>
+  <p>Our best creative was often a person, not a production. A Live, a real customer, a slightly wonky video from Nepal. But there were definitely stretches where we were making plenty of new ads that were really the same ad in a different outfit. New edit, new music, new first three seconds. Same reason to book.</p>
+  <p>The results told us exactly what was going on. Nothing much changed.</p>
+  <div class="trio">
+    <div><span class="lbl">What we see</span><p>Mature accounts producing plenty of "new" creative without testing many new ideas. Different hooks, edits and formats give the appearance of testing while the underlying proposition hasn't changed in a year. Usually three or four old concepts are still carrying most of the spend.</p></div>
+    <div><span class="lbl">Why it matters commercially</span><p>Meta's delivery leans heavily on creative to find the right people. When the ideas run out, the account plateaus, costs creep up and scaling gets harder. The team stays busy and the spend keeps going, but the growth has quietly stopped.</p></div>
+    <div><span class="lbl">Warning signs</span><ul class="plain"><li>Creative output is up, but cost per acquisition isn't improving.</li><li>Your top-performing ads are many months old.</li><li>Creative reviews talk about formats and hooks, rarely about why people buy.</li></ul></div>
+  </div>
+  <div class="ask"><div class="lbl">The question to ask</div><p>How many genuinely different reasons to buy did your business test on Meta last quarter?</p></div>
+</section>
+
+<!-- ===================== LEAK 3 ===================== -->
+<section class="txt leak">
+  <div class="leak-head"><span class="n">3</span><div class="lbl">// Leak 3 of 7 · Offer</div><h2>Asking Meta to fix the proposition.</h2><p>No amount of targeting rescues a first step that's too big, too vague or not compelling enough.</p></div>
+  <h3>Where it showed up at EverTrek</h3>
+  <p>Asking a stranger to book a trek straight from an ad was asking Meta to do something it was never going to do well. The leap was too big. Changing what we asked for, a guide rather than a booking, did more for our results than any targeting change I ever made.</p>
+  <p>And during COVID, the most important "offer" decision we ever made had nothing to do with price. It was making it simple and fair to stay. More than 95% did.</p>
+  <div class="trio">
+    <div><span class="lbl">What we see</span><p>Meta being blamed for problems that are really about the proposition. The offer hasn't changed in years, the first step is too big for a cold audience, or discounting has become the only lever that reliably moves anything.</p></div>
+    <div><span class="lbl">Why it matters commercially</span><p>When the reason to act now is weak, you pay more per result to push people over the line, or you train your market to wait for a sale. Both quietly erode margin, and neither shows up as an "offer problem" in an ad report.</p></div>
+    <div><span class="lbl">Warning signs</span><ul class="plain"><li>Strong engagement and click-through, disappointing conversion.</li><li>Promotions work; nothing else does.</li><li>Competitors with similar products seem to convert cold traffic more easily.</li></ul></div>
+  </div>
+  <div class="ask"><div class="lbl">The question to ask</div><p>If your ideal customer saw your ad cold, what would make them act this week rather than "one day"?</p></div>
+</section>
+
+<!-- ===================== LEAK 4 ===================== -->
+<section class="txt leak">
+  <div class="leak-head"><span class="n">4</span><div class="lbl">// Leak 4 of 7 · Landing experience</div><h2>Paying twice for the same click.</h2><p>Paid traffic lost between the ad and the conversion, while Meta takes the blame.</p></div>
+  <h3>Where it showed up at EverTrek</h3>
+  <p>People arrive from a trekking ad with a dream and about fifteen worries. Am I fit enough? What's the altitude like? What if I need to pull out? If the page they land on only talks about the dream, the worries win.</p>
+  <p>The questions people asked in the comments of our ads and in our Lives were, more or less, a free list of everything our pages needed to answer.</p>
+  <div class="trio">
+    <div><span class="lbl">What we see</span><p>The ad promises one thing and the page talks about another. Pages built for people who already know the brand, not for someone meeting it for the first time. Mobile experiences nobody senior has looked at on an actual phone for months.</p></div>
+    <div><span class="lbl">Why it matters commercially</span><p>Every visitor lost after the click is media you paid for and got nothing back from. It shows up in the ad report as a rising cost per acquisition, so the usual reaction is to fiddle with the ads, which doesn't fix a page problem.</p></div>
+    <div><span class="lbl">Warning signs</span><ul class="plain"><li>Click-through is healthy but conversion rate is drifting down.</li><li>Big differences in conversion rate between traffic sources.</li><li>Nobody can tell you when the landing page was last properly tested.</li></ul></div>
+  </div>
+  <div class="ask"><div class="lbl">The question to ask</div><p>What's your conversion rate from Meta traffic specifically, and what was the last thing that changed it?</p></div>
+</section>
+
+<!-- ===================== LEAK 5 ===================== -->
+<section class="txt leak">
+  <div class="leak-head"><span class="n">5</span><div class="lbl">// Leak 5 of 7 · Lead quality</div><h2>Cheap isn't the same as valuable.</h2><p>The algorithm finds you exactly what you ask for. That's the problem.</p></div>
+  <h3>Where it showed up at EverTrek</h3>
+  <p>When we scaled to 3,500+ leads a month at £4 each, the number I cared about wasn't the £4. It was how many of those people were genuinely the kind of person who'd end up on a mountain with us. A flat cost per lead is lovely. A flat cost per lead full of the wrong people is just a faster way of keeping the sales team busy.</p>
+  <div class="trio">
+    <div><span class="lbl">What we see</span><p>Meta optimising towards the cheapest conversion it can find, because that's what it's been told success looks like. Lead volume up, cost per lead on target, and the sales team grumbling that the leads "aren't what they used to be".</p></div>
+    <div><span class="lbl">Why it matters commercially</span><p>Cheap leads that waste sales time aren't cheap. Worse, Meta learns from what you tell it counts as a win. If the signal going back is "any lead", it gets very good at finding any lead, and steadily worse at finding customers.</p></div>
+    <div><span class="lbl">Warning signs</span><ul class="plain"><li>Cost per lead improving while lead-to-sale rate drifts down.</li><li>Marketing and sales disagree about whether leads are good.</li><li>Nothing about what happens in sales ever goes back into the ad account.</li></ul></div>
+  </div>
+  <div class="ask"><div class="lbl">The question to ask</div><p>What percentage of the leads Meta generates would your sales team describe as genuinely good leads?</p></div>
+</section>
+
+<!-- ===================== LEAK 6 ===================== -->
+<section class="txt leak">
+  <div class="leak-head"><span class="n">6</span><div class="lbl">// Leak 6 of 7 · Follow-up &amp; sales conversion</div><h2>The gap nobody owns.</h2><p>Meta creates the demand. Then the CRM, the nurture and the sales process fail to turn enough of it into money.</p></div>
+  <h3>Where it showed up at EverTrek</h3>
+  <p>The £18,000 lead in chapter 07 only happened because something noticed when that person came back, and a human sent a WhatsApp at the right moment. I can't help wondering how many similar people, over the years, came back quietly and nobody noticed.</p>
+  <div class="trio">
+    <div><span class="lbl">What we see</span><p>Slow follow-up. Generic email sequences that end after a fortnight. No trigger when an old lead re-engages. Leads who aren't ready now treated as dead rather than early. Marketing and sales each reporting their own numbers, with nobody accountable for the handover.</p></div>
+    <div><span class="lbl">Why it matters commercially</span><p>This is very often the biggest leak in the account, and the least likely to be spotted, because it isn't in anybody's ad report. The agency reports leads. Sales reports deals. The money lost in between belongs to no one, so no one goes looking for it.</p></div>
+    <div><span class="lbl">Warning signs</span><ul class="plain"><li>You can't say how quickly a new Meta lead is contacted.</li><li>Leads older than a month or two are never revisited.</li><li>Meta gets blamed for "poor lead quality" without anyone checking the follow-up.</li></ul></div>
+  </div>
+  <div class="ask"><div class="lbl">The question to ask</div><p>What happens to a Meta lead that isn't ready to buy for six months?</p></div>
+</section>
+
+<!-- ===================== LEAK 7 ===================== -->
+<section class="txt leak">
+  <div class="leak-head"><span class="n">7</span><div class="lbl">// Leak 7 of 7 · Measurement</div><h2>Four versions of the truth.</h2><p>Meta, GA4, the CRM and the bank all tell different stories, and budget follows whichever one is loudest that week.</p></div>
+  <h3>Where it showed up at EverTrek</h3>
+  <p>When we tripled Meta spend, search climbed with it. Meta claimed the sales. Google claimed the sales. GA4 had another idea entirely. If we'd judged that period on any one of them, we'd have made a confidently wrong decision about where the next pound should go.</p>
+  <div class="trio">
+    <div><span class="lbl">What we see</span><p>Each channel judged on its own platform's numbers, inside its own window. Seven-day views deciding the fate of activity built to influence three-month decisions. Budget moved because one channel "looks cheaper", with no agreed view of what success means before a test begins.</p></div>
+    <div><span class="lbl">Why it matters commercially</span><p>Measurement decides where every future pound goes. If it's wrong, every decision downstream is wrong too, and made with total confidence. This is how sensible people end up optimising away their own future demand.</p></div>
+    <div><span class="lbl">Warning signs</span><ul class="plain"><li>Nobody can reconcile Meta-reported revenue with actual revenue.</li><li>Tests are judged on whatever window the platform defaults to.</li><li>Budget decisions are made channel by channel rather than on the business result.</li></ul></div>
+  </div>
+  <div class="ask"><div class="lbl">The question to ask</div><p>If you increased Meta spend by 30% tomorrow, what evidence tells you the extra spend would stay profitable?</p></div>
+</section>
+
+<section class="txt sec">
+  <div class="lbl">// Which one is it?</div>
+  <h2>Spotting a leak is the easy bit.</h2>
+  <p class="lead">If you've read all seven and recognised a few, you're in very good company. Almost every account we open has a bit of each.</p>
+  <p>The hard part, and the bit that actually makes money, is working out which one is the <strong>constraint</strong>. The one that, if you fixed it, would let everything else work harder. Because fixing the wrong one first is how businesses spend six months being very busy and slightly disappointed.</p>
+  <p>Improve the creative while the follow-up is broken, and you'll generate more leads that don't convert. Fix the landing page while the measurement is wrong, and you may not even be able to tell it worked. Scale spend while the offer is weak, and you'll just pay more to be ignored by more people.</p>
+  <div class="box">
+    <div class="lbl">How we approach it</div>
+    <h4>We look at five layers: media, creative, offer, conversion and commercial performance.</h4>
+    <p>Not to produce a list of everything that could be better (there's always a list). To find the one constraint that's actually limiting growth right now, and what's likely to happen when you remove it.</p>
+  </div>
+</section>
+
+<!-- ===================== PART THREE ===================== -->
+<section class="opener">
+  <div class="bg side" style="background-image:url(assets/mountain-right.jpg)"></div>
+  <div class="op-lbl">// Part three</div>
+  <div class="op-spacer"></div>
+  <div class="op-title">For whoever signs off the budget.</div>
+  <p class="op-dek">The maths of spending more versus getting more, the whole route your customer takes, a self-audit, and where I'd look first if this were my money.</p>
+  <div class="op-foot"><span>Chapters 09–12</span><span>The Ads Yeti</span></div>
+</section>
+
+<!-- ===================== CH 9 ===================== -->
+<section class="txt">
+  <div class="lbl">// Chapter 09</div>
+  <h2>Spend more, or get more from what you already spend?</h2>
+  <p class="lead">When Meta growth stalls, the most common suggestion in the room is to increase the budget. Sometimes that's exactly right. But it's rarely the first question I'd ask.</p>
+  <p>At EverTrek, the most valuable improvements we ever made weren't budget increases. They were changes that made the money we were already spending produce more: a better first step, a faster follow-up, creative that answered the real worries, measurement that stopped us cutting the wrong thing.</p>
+  <h3>Good ROAS can hide a lot</h3>
+  <p>Platform ROAS is a useful number. It's just not the number your board cares about. I find it helps to look at Meta through a longer chain:</p>
+  <div class="flow"><span>Spend</span><i>→</i><span>Qualified demand</span><i>→</i><span>New customers</span><i>→</i><span>Revenue</span><i>→</i><span>Gross profit</span><i>→</i><span class="on">Incremental growth</span></div>
+  <p>A healthy ROAS can sit happily alongside flat new-customer numbers, shrinking margin and a business that isn't actually growing. If you only look at the first link in the chain, you'll never see it.</p>
+  <h3>The maths</h3>
+  <p>Here's the comparison I'd want in front of me before approving a budget increase. If the same media spend produced more commercial output, how much extra budget would you have needed to buy that result instead?</p>
+  <div class="tbl"><table>
+    <tr><th>Monthly Meta spend</th><th>Annual spend</th><th>+10% output</th><th>+20% output</th><th>+30% output</th></tr>
+    <tr><td>£10,000</td><td>£120,000</td><td>£12,000</td><td>£24,000</td><td class="hl">£36,000</td></tr>
+    <tr><td>£30,000</td><td>£360,000</td><td>£36,000</td><td>£72,000</td><td class="hl">£108,000</td></tr>
+    <tr><td>£50,000</td><td>£600,000</td><td>£60,000</td><td>£120,000</td><td class="hl">£180,000</td></tr>
+    <tr><td>£100,000</td><td>£1,200,000</td><td>£120,000</td><td>£240,000</td><td class="hl">£360,000</td></tr>
+  </table></div>
+  <p style="font-size:15px;color:var(--muted)">Equivalent media value: the extra annual budget you'd otherwise need to spend for the same result, assuming returns held steady (they usually don't, which makes the case stronger). Illustrative only. I'm not promising anyone 30%.</p>
+  <p>The point isn't the exact percentage. It's that the output of what you already spend is usually a bigger, cheaper and less risky lever than the next budget increase. And it's the one boards ask about least.</p>
+  <div class="pull">Meta isn't expensive. Inefficient Meta is.</div>
+</section>
+
+<!-- ===================== CH 10 ===================== -->
+<section class="txt sec">
+  <div class="lbl">// Chapter 10</div>
+  <h2>Meta performance isn't just a Meta problem.</h2>
+  <p class="lead">This is probably the single biggest thing ten years at EverTrek taught me. The campaigns are one box in a much longer route, and optimising only that box puts a ceiling on everything.</p>
+  <div class="flow"><span>Market</span><i>→</i><span>Message</span><i>→</i><span>Creative</span><i>→</i><span class="on">Meta</span><i>→</i><span>Landing page</span><i>→</i><span>Lead</span><i>→</i><span>Nurture</span><i>→</i><span>Sales</span><i>→</i><span>Customer</span><i>→</i><span>Measurement</span><i>→</i><span>back into Meta</span></div>
+  <p>Look at where the seven leaks sit on that route. Only one of them, media efficiency, lives entirely inside Ads Manager. The other six are spread across creative, offer, website, CRM, sales and reporting. Which is why an account can be "well managed" by every platform metric and still leave a lot of revenue on the table.</p>
+  <p>It's also why I think a lot of the frustration with Meta is misplaced. The ads get blamed because they're the most visible line of spend. The leak is often three steps further down the route, in a part of the business the ad team can't see and wasn't asked to look at.</p>
+  <h3>Customers don't live inside Ads Manager</h3>
+  <p>They see something. Leave. Google you. Read reviews. Forget about you. See you again. Come back. Eventually buy. Yet we still put each channel in its own little box and ask which one "won".</p>
+  <p>The research backs this up, and it's not just ours:</p>
+  <ul class="plain">
+    <li><strong>Analytic Partners</strong> (ROI Genome, 750+ brands): around 30% of paid search performance is driven by brand and upper-funnel activity elsewhere.</li>
+    <li><strong>Brainlabs with Meta</strong> (17 incrementality studies, 12 advertisers): people who saw Meta ads made 19% more search visits than a matched group who didn't.</li>
+    <li><strong>Expedia Group</strong> (70,000+ travellers): a travel booking takes around 45 days and 141 pages of content. Last-click reporting credits exactly one of them.</li>
+    <li><strong>Our own 55-account analysis</strong>: in 73% of accounts, higher Meta spend moved with higher branded search and conversion volume.</li>
+  </ul>
+  <div class="box">
+    <div class="lbl">The most expensive sensible decision in marketing</div>
+    <h4>How established brands optimise away next year's customers.</h4>
+    <p>Meta ROAS dips in a soft month. Budget moves to Search, which looks efficient and close to revenue. Four to eight weeks later, branded search softens. Acquisition costs creep up. Someone decides Search has stopped working. <strong>It hasn't. Fewer people were being given a reason to search.</strong></p>
+    <p>Every step makes sense on its own. The damage only shows up in the gap between them, and channel-by-channel reporting is built to hide exactly that gap.</p>
+  </div>
+</section>
+
+<!-- ===================== CH 11 SELF AUDIT ===================== -->
+<section class="txt sec">
+  <div class="lbl">// Chapter 11 · The self-audit</div>
+  <h2>Twelve questions for your next Meta review.</h2>
+  <p class="lead">There's no score at the end of this, and no "0–4 means disaster". Just tick the ones you can answer confidently today, with evidence rather than a feeling.</p>
+  <ol class="checklist">
+    <li><span>We can name which campaigns produce our highest-value customers, not just our cheapest conversions.</span><i></i></li>
+    <li><span>We know roughly how much of Meta's claimed revenue would disappear if we switched it off.</span><i></i></li>
+    <li><span>We tested a genuinely new reason to buy on Meta in the last 90 days.</span><i></i></li>
+    <li><span>We know our conversion rate from Meta traffic specifically, and what last changed it.</span><i></i></li>
+    <li><span>We can connect a Meta lead to actual revenue in our CRM.</span><i></i></li>
+    <li><span>We know what percentage of Meta leads our sales team would call genuinely good.</span><i></i></li>
+    <li><span>We know our real average time from first touch to purchase.</span><i></i></li>
+    <li><span>We agree how long to judge a campaign or test before it launches.</span><i></i></li>
+    <li><span>We can see branded search next to Meta spend, week by week.</span><i></i></li>
+    <li><span>What happens in sales feeds back into how Meta is optimised.</span><i></i></li>
+    <li><span>Our agency or team has proposed a meaningful offer or funnel test in the last 90 days.</span><i></i></li>
+    <li><span>If we added 30% to the budget tomorrow, someone could explain what it would buy.</span><i></i></li>
+  </ol>
+  <p>If several of those were hard to answer confidently, that doesn't mean anything's broken. It means you're investing a lot of money in a machine you can't fully see inside. And that's usually where the growth is hiding.</p>
+</section>
+
+<!-- ===================== CH 12 ===================== -->
+<section class="txt sec">
+  <div class="lbl">// Chapter 12</div>
+  <h2>If this were my £600k, here's where I'd look first.</h2>
+  <p class="lead">Say you're spending £50k a month on Meta. That's £600k a year. If it were EverTrek's money, this is roughly the order I'd want to understand things in, before touching a single campaign.</p>
+  <ul class="plain">
+    <li><strong>Where the money actually goes</strong> versus where genuinely new customers come from.</li>
+    <li><strong>The creative history</strong>: how many real ideas have been tested, rather than how many ads.</li>
+    <li><strong>The offer and the first step</strong>, seen through the eyes of someone who's never heard of you.</li>
+    <li><strong>What happens after the click</strong> for Meta traffic specifically.</li>
+    <li><strong>Lead quality as sales sees it</strong>, not as the ad account reports it.</li>
+    <li><strong>What happens to people who aren't ready yet</strong>, and whether anything notices when they come back.</li>
+    <li><strong>How the four versions of the truth disagree</strong>, and which one is actually making the budget decisions.</li>
+    <li><strong>The customer economics</strong>: margin, repeat purchase and lifetime value by source.</li>
+  </ul>
+  <p>Then, and this is the bit that matters, I'd work out which of those is the constraint. Not the longest list of improvements. The one thing that's holding the rest back.</p>
+  <p>That's the part that's very hard to do from inside the business. Not because your team isn't capable, but because they're busy running it, and because everyone's been looking at the same dashboards for long enough that the gaps start to look normal.</p>
+  <div class="pull">Nobody buys on a dashboard. People buy after a route of attention, confidence and intent. The job is to find where that route is leaking.</div>
+</section>
+
+<!-- ===================== CTA ===================== -->
+<section class="opener">
+  <div class="op-lbl">// A second opinion</div>
+  <div class="op-spacer" style="min-height:30px"></div>
+  <img src="assets/yeti.jpg" alt="" style="width:46%;max-width:300px;border-radius:16px;margin-bottom:28px">
+  <div class="op-title">Let Andy take a look.</div>
+  <p class="op-dek">You're already spending £10k+ a month on Meta. You don't need another agency telling you to spend more.</p>
+  <p class="op-dek" style="font-size:16.5px;margin-top:16px">We'll take an independent look at your Meta performance, creative, offer, funnel and conversion journey, and show you where we believe revenue is being left on the table. If everything looks great, we'll tell you. If it doesn't, we'll show you where we'd start.</p>
+  <div class="cta-btns"><span class="btn">adsyeti.com</span><span class="btn-ph">[ add booking link here ]</span></div>
+  <div class="op-foot"><span>Andy Moore · Head Ads Yeti</span><span>Climb higher / make it count</span></div>
+</section>
+
+<!-- ===================== SOURCES ===================== -->
+<section class="txt src">
+  <div class="lbl">// Sources and honest notes</div>
+  <h2>Where the numbers come from.</h2>
+  <p><b>EverTrek account data.</b> Meta spend, paid social leads and cost per lead, June to November. Search and organic movements are directional.</p>
+  <p><b>EverTrek customer records.</b> COVID postponement retention (95%+ of customers offered the option) and the £18k customer journey. One journey is an example, not a trend.</p>
+  <p><b>2016 lead costs.</b> Andy's recollection of early EverTrek Facebook campaigns. Approximate, and a very different market to today.</p>
+  <p><b>55-account analysis.</b> Weekly Meta and Google Ads data from UK ecommerce and retail brands, anonymised. Correlation, not causation. Full detail in our Connected Demand briefing.</p>
+  <p><b>Analytic Partners</b>, ROI Genome (750+ brands, 45 countries). <b>Brainlabs with Meta</b>, incrementality studies (17 studies, 12 advertisers). <b>Expedia Group</b>, Path to Purchase research (70,000+ travellers, seven markets).</p>
+  <p><b>Illustrative maths.</b> Tables in chapters 09 and the leak introduction are arithmetic on spend levels, not predicted results.</p>
+  <p style="margin-top:22px">Correlation shows that two measures moved together over a period. It doesn't isolate creative, offer, seasonality, pricing or competitor effects. Use it to ask sharper questions, not to hand out trophies.</p>
+</section>
+
+<script>
+// Hide the "Andy to add" notes with ?final or #final for a clean read
+if(/final/.test(location.hash)){document.querySelectorAll('.gap').forEach(function(g){g.hidden=true})}
+</script>
+</body>
+</html>
