@@ -1,0 +1,188 @@
+<title>Absolute Escapes Meta Ads · 6–12 Oct</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+/* Layout: slate brand band with logo → 6 KPI tiles → daily chart + campaign split → campaign table → ad leaderboard → notes */
+:root{
+  --teal:#01a59f; --teal-ink:#017f7a; --slate:#445359; --slate-deep:#33424a; --blue:#4ea8bf; --gold:#c9932a;
+  --bg:#f4f7f7; --surface:#ffffff; --mist:#eaf2f1; --fg:#2c383d; --muted:#5f6e73; --line:#d6e0e0; --grid:#e6eded;
+  --band:#33424a; --band-fg:#ffffff;
+  --display:"upgrade","Jost","Trebuchet MS","Segoe UI",sans-serif;
+  --text:"myriad-pro","Source Sans 3","Segoe UI",Calibri,Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --teal:#2cc4bd; --teal-ink:#5fd8d2; --slate:#c6d2d5; --blue:#7cc3d6; --gold:#e8b64c;
+  --bg:#172126; --surface:#1f2b31; --mist:#24353b; --fg:#e4ecee; --muted:#9fb0b5; --line:#34454c; --grid:#2a3940;
+  --band:#0f171b; --band-fg:#ffffff; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --teal:#2cc4bd; --teal-ink:#5fd8d2; --slate:#c6d2d5; --blue:#7cc3d6; --gold:#e8b64c;
+  --bg:#172126; --surface:#1f2b31; --mist:#24353b; --fg:#e4ecee; --muted:#9fb0b5; --line:#34454c; --grid:#2a3940;
+  --band:#0f171b; --band-fg:#ffffff; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--text);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);font-weight:500;margin:0;text-wrap:balance}
+.band{background:var(--band);color:var(--band-fg);padding-inline:16px}
+.band-in{max-width:1180px;margin:0 auto;padding-block:22px 26px;display:flex;flex-wrap:wrap;gap:18px 32px;align-items:flex-end;justify-content:space-between}
+.logo{height:40px;width:auto;display:block;margin-bottom:18px}
+.band h1{font-size:clamp(26px,4vw,36px);line-height:1.1}
+.band p{margin:6px 0 0;color:#c9d5d8;font-size:15px}
+.meta{display:flex;flex-wrap:wrap;gap:8px}
+.pill{border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:5px 12px;font-size:13px;color:#e8f0f1;white-space:nowrap}
+.pill b{color:#fff;font-weight:600}
+.pill.live::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:#3fd3a0;margin-right:7px;vertical-align:1px}
+main{max-width:1180px;margin:0 auto;padding:28px 16px 48px;display:flex;flex-direction:column;gap:22px}
+.kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px 16px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.kpi.hero{background:var(--teal);border-color:var(--teal);color:#fff}
+.kpi.hero .lab,.kpi.hero .sub{color:rgba(255,255,255,.88)}
+.lab{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.val{font-family:var(--display);font-size:28px;font-weight:500;line-height:1.15;font-variant-numeric:tabular-nums}
+.sub{font-size:13px;color:var(--muted)}
+.row{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:22px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:20px;min-width:0;display:flex;flex-direction:column;gap:14px}
+.ph{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 16px}
+.ph h2{font-size:21px;color:var(--slate)}
+.ph span{font-size:13px;color:var(--muted)}
+.legend{display:flex;gap:16px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+svg text{font-family:var(--text)}
+.split{display:flex;flex-direction:column;gap:14px}
+.sp-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:baseline}
+.sp-name{font-weight:600;font-size:15px}
+.sp-num{font-variant-numeric:tabular-nums;font-size:14px;color:var(--muted)}
+.sp-num b{color:var(--fg);font-weight:600}
+.bar{grid-column:1/-1;height:10px;background:var(--mist);border-radius:2px;overflow:hidden}
+.bar>div{height:100%;background:var(--teal)}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:760px}
+th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;text-align:right;padding:9px 10px;border-bottom:2px solid var(--line);white-space:nowrap}
+td{padding:11px 10px;border-bottom:1px solid var(--grid);text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+th:first-child,td:first-child{text-align:left;white-space:normal}
+tr.tot td{font-weight:600;border-top:2px solid var(--line);border-bottom:0}
+.cname{font-weight:600}
+.cname small{display:block;font-weight:400;color:var(--muted);font-size:12.5px}
+.chip{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.chip.best{background:color-mix(in srgb,var(--teal) 16%,transparent);color:var(--teal-ink)}
+.chip.watch{background:color-mix(in srgb,var(--gold) 20%,transparent);color:var(--fg)}
+.cpl{display:inline-flex;align-items:center;gap:8px;justify-content:flex-end}
+.cpl .mini{width:60px;height:6px;background:var(--mist);border-radius:2px;overflow:hidden}
+.cpl .mini>div{height:100%;background:var(--slate)}
+.notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.note h3{font-size:18px;color:var(--slate);margin-bottom:6px}
+.note p{margin:0;color:var(--fg);font-size:15px;max-width:60ch}
+.foot{font-size:13px;color:var(--muted);max-width:90ch}
+@media (max-width:980px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.row,.notes{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:520px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.val{font-size:24px}}
+</style>
+
+<header class="band">
+  <div class="band-in">
+    <div>
+      <img class="logo" alt="Absolute Escapes" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI0LjAuMywgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHdpZHRoPSIzMTEuOHB4IiBoZWlnaHQ9IjYyLjRweCIgdmlld0JveD0iMCAwIDMxMS44IDYyLjQiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDMxMS44IDYyLjQ7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4KCS5zdDB7ZmlsbDojRkZGRkZGO30KCS5zdDF7ZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7ZmlsbDojNzVBREE0O30KPC9zdHlsZT4KPGc+Cgk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMCwyOS41YzIuNC0wLjMsMy4yLTEuOCw0LjMtNC44TDEzLjQsMGgwLjlMMjQsMjYuNGMwLjksMi40LDIsMi45LDMuOSwzdjAuNkgxNi41di0wLjZoMS4yCgkJYzEuNiwwLDIuNS0wLjcsMi41LTEuNmMwLTAuOC0wLjItMS42LTAuOS0zLjRMMTgsMjAuN2MtMy40LTMuMi03LjItMy4zLTExLjMsMGwtMC44LDIuNGMtMC40LDEuMi0wLjksMi42LTAuOSw0LjIKCQljMCwxLjQsMC44LDIuMiwyLjQsMi4yaDAuOHYwLjZIMFYyOS41eiBNMTcuNywxOS44TDEyLjQsNC43TDcsMTkuOEMxMC43LDE3LDE0LjMsMTcsMTcuNywxOS44eiIvPgoJPHBhdGggY2xhc3M9InN0MCIgZD0iTTMyLDIyLjh2LTE5YzAtMi0wLjQtMi40LTIuMy0yLjRIMjlWMC44bDYtMC42djkuM2MwLDMuMy0wLjEsNi43LTAuMSw2LjdIMzVjMS42LTIuOCwzLjMtNC40LDYuMS00LjQKCQljMy43LDAsNy40LDQsNy40LDkuM2MwLDUuOS0zLjksOS41LTcuNSw5LjVjLTIuOSwwLTQuNS0xLjYtNS45LTQuMmgtMC4xTDMyLDMwLjloLTAuNkMzMS45LDI4LjQsMzIsMjUuNCwzMiwyMi44eiBNNDQuOCwyMS4xCgkJYzAtNC43LTEuMS04LjctNC4zLTguN2MtMi45LDAtNS42LDMuNi01LjYsOC43YzAsNC44LDIuNCw4LjcsNS41LDguN0M0MywyOS44LDQ0LjgsMjcuNCw0NC44LDIxLjF6Ii8+Cgk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNNTQuOCwyOWMtMC42LDAtMS4yLDAuNS0xLjUsMS41aC0wLjR2LTcuM2gwLjRjMC43LDQuMiw0LjIsNi43LDcuNSw2LjdjMi41LDAsNC4zLTEuNSw0LjMtMy41CgkJYzAtMS45LTEuMy0yLjYtNS43LTMuOWMtMy44LTEuMS02LjQtMi02LjQtNS44YzAtMy4xLDIuMy01LDUuNi01YzIuNSwwLDMuNiwxLjEsNC45LDEuMWMwLjcsMCwxLjItMC4zLDEuNS0xLjFoMC40djYuNWgtMC40CgkJYy0wLjctMy41LTMuMS01LjktNi43LTUuOWMtMiwwLTMuNSwxLjMtMy41LDMuMmMwLDIsMS43LDIuNyw1LjMsMy42YzQuNywxLjIsNi44LDIuNiw2LjgsNmMwLDMuNC0yLjYsNS40LTYuMyw1LjQKCQlDNTgsMzAuNSw1NS45LDI5LDU0LjgsMjl6Ii8+Cgk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNNzAuOCwyMS4xYzAtNS42LDQuNC05LjYsOC40LTkuNnM4LjMsMy45LDguMyw5LjVjMCw1LjQtNC4zLDkuNy04LjMsOS43Qzc1LjEsMzAuNyw3MC44LDI2LjUsNzAuOCwyMS4xegoJCSBNODMuOSwyMS4xYzAtNS0xLjMtOS00LjgtOXMtNC44LDMuOS00LjgsOC45YzAsNC45LDEuMiw5LjEsNC44LDkuMUM4Mi43LDMwLjEsODMuOSwyNi4xLDgzLjksMjEuMXoiLz4KCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik05MC44LDI5LjVIOTFjMS45LDAsMi4zLTAuNSwyLjMtMi42di0yM2MwLTItMC40LTIuNi0yLjMtMi42aC0wLjNWMC44bDUuNy0wLjZ2MjYuOGMwLDIsMC40LDIuNiwyLjMsMi42SDk5CgkJdjAuNmgtOC4yVjI5LjV6Ii8+Cgk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMTAzLjgsMjQuNHYtOS4yYzAtMS45LTAuNC0yLjQtMi4zLTIuNGgtMC40di0wLjZsNS43LTAuM3YxMy40YzAsMywxLjIsNC4yLDMuMiw0LjJjMi43LDAsNS4zLTMuOCw1LjMtNy40CgkJdi02LjljMC0yLTAuNC0yLjUtMi4zLTIuNWgtMC45di0wLjZsNi4yLTAuM3YxNWMwLDEuOSwwLjUsMi41LDIuMywyLjVoMC4zdjAuNmwtNS43LDAuNmwwLjItNS4zaC0wLjFjLTEuMSwyLjktMy42LDUuMy02LjUsNS4zCgkJQzEwNS42LDMwLjUsMTAzLjgsMjguNSwxMDMuOCwyNC40eiIvPgoJPHBhdGggY2xhc3M9InN0MCIgZD0iTTEyNiwyNS4yVjEyLjhoLTIuOXYtMC41YzIuNy0wLjUsNS0yLjQsNS40LTcuOWgwLjZ2Ny43aDUuOHYwLjdoLTUuOHYxMi41YzAsMi43LDEsNCwyLjksNAoJCWMxLjgsMCwzLjItMS45LDMuMy01LjdoMC42YzAsNC40LTEuOSw2LjktNSw2LjlDMTI3LjksMzAuNiwxMjYsMjguOSwxMjYsMjUuMnoiLz4KCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0xMzguOSwyMS4yYzAtNS44LDQtOS43LDguMy05LjdjMy40LDAsNy40LDIuNiw3LjQsOC4yYzAsMC4xLDAsMS4xLTAuMSwxLjNoLTEyLjFjMCw0LjcsMS45LDguNCw1LjYsOC40CgkJYzMuMywwLDUtMS43LDYuNC0zLjdsMC41LDAuM2MtMS42LDIuNi00LjEsNC44LTcuOCw0LjhDMTQyLjEsMzAuNywxMzguOSwyNy4xLDEzOC45LDIxLjJ6IE0xNDguOCwyMC4zYzEuNywwLDIuMi0wLjYsMi4yLTEuOQoJCWMwLTMuNC0xLjItNi4yLTMuOS02LjJjLTMsMC00LjUsMy4yLTQuNyw4LjFMMTQ4LjgsMjAuM0wxNDguOCwyMC4zeiIvPgoJPHBhdGggY2xhc3M9InN0MCIgZD0iTTE3MC4zLDI5LjVoMS4yYzIsMCwyLjctMC42LDIuNy0yLjZWNC4xYzAtMi0wLjctMi42LTIuNy0yLjZoLTEuMlYwLjhoMjEuNmwwLjQsMTAuNWgtMC42CgkJYy0wLjktNi41LTIuNC05LjktOC42LTkuOWgtMi43Yy0yLDAtMi43LDAuNS0yLjcsMi42djEwLjVoMi4yYzQuMiwwLDUuNC0yLjYsNS40LTYuMmgwLjZ2MTMuM2gtMC42YzAtMy42LTEuMi02LjUtNS40LTYuNWgtMi4yCgkJdjExLjdjMCwyLDAuOCwyLjYsMi43LDIuNmgzLjVjNiwwLDcuNC00LjIsOC41LTEwLjhoMC42bC0wLjcsMTEuNGgtMjIuMVYyOS41eiIvPgoJPHBhdGggY2xhc3M9InN0MCIgZD0iTTIwMC44LDI5Yy0wLjYsMC0xLjIsMC41LTEuNSwxLjVoLTAuNHYtNy4zaDAuNGMwLjcsNC4yLDQuMSw2LjcsNy41LDYuN2MyLjUsMCw0LjMtMS41LDQuMy0zLjUKCQljMC0xLjktMS4zLTIuNi01LjYtMy45Yy0zLjgtMS4xLTYuNC0yLTYuNC01LjhjMC0zLjEsMi4zLTUsNS42LTVjMi41LDAsMy42LDEuMSw0LjksMS4xYzAuNywwLDEuMi0wLjMsMS41LTEuMWgwLjR2Ni41aC0wLjQKCQljLTAuNy0zLjUtMy4xLTUuOS02LjctNS45Yy0yLDAtMy42LDEuMy0zLjYsMy4yYzAsMiwxLjcsMi43LDUuMywzLjZjNC43LDEuMiw2LjgsMi42LDYuOCw2YzAsMy40LTIuNiw1LjQtNi4zLDUuNAoJCUMyMDMuOSwzMC41LDIwMS44LDI5LDIwMC44LDI5eiIvPgoJPHBhdGggY2xhc3M9InN0MCIgZD0iTTIxNi43LDIxLjJjMC01LjMsNC4yLTkuNyw5LjItOS43YzMuMywwLDUuOCwyLjMsNS44LDQuOGMwLDEuNS0wLjksMi40LTIuMSwyLjRjLTEuMiwwLTItMS0yLTIKCQljMC0wLjksMC42LTEuNywxLjUtMmMwLjUtMC4xLDAuOSwwLjEsMC45LTAuM2MwLTAuOC0xLjUtMi4yLTQuMi0yLjJjLTMuOSwwLTUuNCwzLjYtNS40LDguOGMwLDQuNywxLjksOC4zLDUuOCw4LjMKCQljMi42LDAsNC4zLTEuNCw1LjYtMy4xbDAuNCwwLjNjLTEuNSwyLjQtNC4xLDQuMi03LjQsNC4yQzIyMC41LDMwLjcsMjE2LjcsMjcsMjE2LjcsMjEuMnoiLz4KCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0yMzUuMywyNi41YzAtMy42LDMuMi01LjYsMTEuMy03LjV2LTEuMmMwLTQuMS0xLjYtNS41LTQuMi01LjVjLTIuMywwLTQuMywxLTQuMywxLjhjMCwwLjEsMCwwLjIsMC4yLDAuMgoJCWMwLjksMCwxLjgsMC44LDEuOCwxLjljMCwxLjEtMC45LDItMS45LDJjLTEuMSwwLTEuOS0wLjgtMS45LTIuMWMwLTIuMiwyLjQtNC4zLDYuOS00LjNjMy40LDAsNi40LDEuMiw2LjQsNi4zdjguOAoJCWMwLDEuOCwwLjUsMi40LDEuMSwyLjRjMSwwLDEuNS0xLjEsMS41LTMuNGgwLjZjLTAuMSw0LjEtMS41LDQuOC0zLjIsNC44Yy0xLjcsMC0zLjItMC45LTMtNGgtMC4xYy0wLjgsMi4yLTMuNCw0LjEtNi40LDQuMQoJCUMyMzcuNCwzMC42LDIzNS4zLDI5LjIsMjM1LjMsMjYuNXogTTI0Ni42LDIyLjh2LTMuMWMtNi42LDEuMy03LjgsMy42LTcuOCw2YzAsMS45LDEsMy4zLDMsMy4zQzI0My45LDI5LjEsMjQ2LjYsMjcuNSwyNDYuNiwyMi44egoJCSIvPgoJPHBhdGggY2xhc3M9InN0MCIgZD0iTTI1NC41LDM4LjJoMC41YzEuOSwwLDIuMy0wLjUsMi4zLTIuNFYxNS4yYzAtMi0wLjQtMi40LTIuMy0yLjRoLTAuM3YtMC42bDUuNi0wLjNsLTAuMSw0LjRoMC4xCgkJYzEuNC0yLjYsMy4yLTQuNSw2LTQuNWMzLjUsMCw3LjUsMy42LDcuNSw5LjRjMCw1LjYtMy45LDkuNC03LjcsOS40Yy0yLjksMC00LjctMi01LjktNC42aDBjMCwwLDAuMiwyLjYsMC4yLDUuNHY0LjUKCQljMCwyLDAuNCwyLjQsMi4zLDIuNGgxdjAuNmgtOS4xVjM4LjJ6IE0yNzAuMSwyMS4yYzAtNC40LTEtOC44LTQuMy04LjhjLTIuMSwwLTUuNSwyLjUtNS41LDguN2MwLDQuNCwyLjQsOC43LDUuNCw4LjcKCQlDMjY5LDI5LjgsMjcwLjEsMjUuOCwyNzAuMSwyMS4yeiIvPgoJPHBhdGggY2xhc3M9InN0MCIgZD0iTTI3Ny41LDIxLjJjMC01LjgsNC05LjcsOC4zLTkuN2MzLjQsMCw3LjQsMi42LDcuNCw4LjJjMCwwLjEsMCwxLjEtMC4xLDEuM0gyODFjMCw0LjcsMS45LDguNCw1LjYsOC40CgkJYzMuMywwLDUtMS43LDYuNC0zLjdsMC41LDAuM2MtMS42LDIuNi00LjEsNC44LTcuOCw0LjhDMjgwLjcsMzAuNywyNzcuNSwyNy4xLDI3Ny41LDIxLjJ6IE0yODcuNSwyMC4zYzEuNywwLDIuMi0wLjYsMi4yLTEuOQoJCWMwLTMuNC0xLjItNi4yLTMuOS02LjJjLTMsMC00LjUsMy4yLTQuNyw4LjFMMjg3LjUsMjAuM0wyODcuNSwyMC4zeiIvPgoJPHBhdGggY2xhc3M9InN0MCIgZD0iTTI5OS43LDI5Yy0wLjYsMC0xLjIsMC41LTEuNSwxLjVoLTAuNHYtNy4zaDAuNGMwLjcsNC4yLDQuMSw2LjcsNy41LDYuN2MyLjUsMCw0LjMtMS41LDQuMy0zLjUKCQljMC0xLjktMS4zLTIuNi01LjYtMy45Yy0zLjgtMS4xLTYuNC0yLTYuNC01LjhjMC0zLjEsMi4zLTUsNS42LTVjMi41LDAsMy42LDEuMSw0LjksMS4xYzAuNywwLDEuMi0wLjMsMS41LTEuMWgwLjR2Ni41SDMxMAoJCWMtMC43LTMuNS0zLjEtNS45LTYuNy01LjljLTIsMC0zLjUsMS4zLTMuNSwzLjJjMCwyLDEuNywyLjcsNS4zLDMuNmM0LjcsMS4yLDYuOCwyLjYsNi44LDZjMCwzLjQtMi42LDUuNC02LjMsNS40CgkJQzMwMi45LDMwLjUsMzAwLjgsMjksMjk5LjcsMjl6Ii8+CjwvZz4KPHBhdGggY2xhc3M9InN0MSIgZD0iTTYwLDYyLjRjOTktMjQuNSwxMDguNCw0LjIsMTkwLjQtNS45YzIuMS0wLjMsMi4xLTAuNCwwLTAuMkMxNzQsNjMuNSwxNTIsMzUuNCw2MCw2Mi40CglDNTkuOCw2Mi40LDU5LjgsNjIuNCw2MCw2Mi40eiIvPgo8L3N2Zz4K">
+      <h1>Meta Ads · last 7 days</h1>
+      <p>US traffic campaigns · Mon 6 Oct – Sun 12 Oct 2026</p>
+    </div>
+    <div class="meta">
+      <span class="pill live"><b>4</b>&nbsp;campaigns live</span>
+      <span class="pill">Objective: <b>Traffic</b> · landing page views</span>
+      <span class="pill">Ad account <b>Absolute Escapes</b></span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="kpis" aria-label="Headline numbers">
+    <div class="kpi"><span class="lab">Spend</span><span class="val">£196.74</span><span class="sub">≈ £28.11 a day</span></div>
+    <div class="kpi hero"><span class="lab">Landing page views</span><span class="val">2,843</span><span class="sub">the result we optimise for</span></div>
+    <div class="kpi"><span class="lab">Cost per LPV</span><span class="val">£0.069</span><span class="sub">6.9p per visit</span></div>
+    <div class="kpi"><span class="lab">Link clicks</span><span class="val">3,528</span><span class="sub">£0.056 per click</span></div>
+    <div class="kpi"><span class="lab">Link CTR</span><span class="val">14.2%</span><span class="sub">clicks ÷ impressions</span></div>
+    <div class="kpi"><span class="lab">Reach</span><span class="val">19,206</span><span class="sub">24,928 impr. · freq 1.30 · CPM £7.89</span></div>
+  </section>
+
+  <section class="row">
+    <div class="panel">
+      <div class="ph"><h2>Day by day</h2>
+        <div class="legend"><span><i style="background:var(--teal)"></i>Landing page views</span><span><i style="background:var(--slate)"></i>Cost per LPV</span></div>
+      </div>
+      <div id="daily" role="img" aria-label="Daily landing page views and cost per landing page view, 6 to 12 October"></div>
+    </div>
+    <div class="panel">
+      <div class="ph"><h2>Where the visits came from</h2><span>share of LPVs</span></div>
+      <div class="split" id="split"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="ph"><h2>Campaigns</h2><span>sorted by cost per landing page view</span></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Campaign</th><th>Spend</th><th>Impr.</th><th>Reach</th><th>CPM</th><th>Link clicks</th><th>Link CTR</th><th>LPVs</th><th>Click → LPV</th><th>Cost / LPV</th></tr></thead>
+        <tbody id="camp"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="ph"><h2>Top ads</h2><span>ads with £5+ spend · 37 ads delivered in total</span></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Ad</th><th>Spend</th><th>Share of campaign</th><th>Impr.</th><th>LPVs</th><th>Cost / LPV</th></tr></thead>
+        <tbody id="ads"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="ph"><h2>What stands out</h2></div>
+    <div class="notes">
+      <div class="note"><h3>Highlands is the cheapest traffic</h3><p>Escape to the Highlands delivered 886 visits at 5.5p each, 31% of all landing page views on a quarter of the budget. Its CPM (£6.00) is the lowest of the four, so the US audience is reaching it cheaply.</p></div>
+      <div class="note"><h3>SO Escape to the Edge costs most</h3><p>At 8.9p per visit it is 62% dearer than Highlands, driven by a £10.28 CPM rather than weaker ads. CTR is in line with the rest. West Coast of Ireland sits close behind at 7.9p.</p></div>
+      <div class="note"><h3>One ad carries each campaign</h3><p>In Highlands and NC500 a single image took over 97% of spend, so the other creatives in those campaigns have barely been tested. Ireland and SO spread spend more evenly across two or three images.</p></div>
+    </div>
+  </section>
+
+  <p class="foot">Source: Meta Ads Manager, ad account Absolute Escapes, pulled 13 Oct 2026 for the last 7 complete days (6–12 Oct), default attribution. Spend in GBP. All other campaigns in the account, including the UK SWCP and WHW tests, were paused and had no delivery. The 14% link CTR is far above what Meta traffic campaigns usually see (around 1–2%); it is worth checking placement mix for accidental clicks, although the 81% click-to-landing-page rate suggests most clicks are real visits.</p>
+</main>
+
+<script>
+const days=[["Mon 6",29.10,2945,379,304],["Tue 7",35.00,3713,506,414],["Wed 8",28.54,3287,499,398],["Thu 9",24.30,3313,503,406],["Fri 10",21.99,3152,442,355],["Sat 11",33.64,4891,718,575],["Sun 12",24.17,3627,481,391]];
+const camps=[
+ {n:"Escape to the Highlands",f:"READY US Escape to the Highlands Traffic V1 Oct 26",s:48.63,i:8102,r:7633,lc:1091,l:886},
+ {n:"NC500",f:"READY US NC500 Traffic V1 Oct 26",s:48.08,i:6344,r:6062,lc:934,l:763},
+ {n:"West Coast of Ireland",f:"READY US West Coast of Ireland Traffic V1 Oct 26",s:49.22,i:5541,r:4146,lc:797,l:624},
+ {n:"SO Escape to the Edge",f:"READY US SO Escape to the Edge Traffic V1 Oct 26",s:50.81,i:4941,r:3919,lc:706,l:570}];
+const ads=[["ETTH IMG 4","Escape to the Highlands",47.32,7938,875],["NC500 IMG 3","NC500",46.96,6219,758],["SO IMG 2","SO Escape to the Edge",33.80,3289,394],["WCOI IMG 4","West Coast of Ireland",23.57,2370,292],["WCOI IMG 6","West Coast of Ireland",17.41,2105,223],["SO IMG 8","SO Escape to the Edge",7.52,736,91],["SO IMG 9","SO Escape to the Edge",6.43,573,63],["WCOI IMG 2","West Coast of Ireland",5.71,723,79]];
+const campSpend={};camps.forEach(c=>campSpend[c.n]=c.s);
+const fmt=n=>n.toLocaleString("en-GB"), gbp=(n,d=2)=>"£"+n.toFixed(d), pct=n=>(n*100).toFixed(1)+"%";
+const totL=camps.reduce((a,c)=>a+c.l,0);
+
+/* daily chart: bars = LPVs (left axis 0–600), line = cost/LPV (right axis 5p–10p) */
+(function(){
+  const W=680,H=280,m={t:16,r:52,b:34,l:44},iw=W-m.l-m.r,ih=H-m.t-m.b,bw=iw/days.length;
+  const y=v=>m.t+ih-(v/600)*ih, y2=v=>m.t+ih-((v-0.05)/0.05)*ih;
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block;max-width:100%">`;
+  [0,200,400,600].forEach(v=>{s+=`<line x1="${m.l}" x2="${W-m.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--grid)"/><text x="${m.l-8}" y="${y(v)+4}" text-anchor="end" font-size="12" fill="var(--muted)">${v}</text>`});
+  [0.05,0.075,0.10].forEach(v=>{s+=`<text x="${W-m.r+8}" y="${y2(v)+4}" font-size="12" fill="var(--muted)">${+(v*100).toFixed(1)}p</text>`});
+  let pts=[];
+  days.forEach((d,i)=>{const x=m.l+i*bw+bw*0.18,w=bw*0.64,cx=m.l+i*bw+bw/2,cp=d[1]/d[4];
+    s+=`<rect x="${x}" y="${y(d[4])}" width="${w}" height="${y(0)-y(d[4])}" rx="2" fill="var(--teal)" opacity="${i==5?1:.78}"><title>${d[0]} Oct: ${d[4]} LPVs, £${d[1].toFixed(2)} spend</title></rect>`;
+    s+=`<text x="${cx}" y="${y(d[4])-6}" text-anchor="middle" font-size="12" font-weight="600" fill="var(--fg)">${d[4]}</text>`;
+    s+=`<text x="${cx}" y="${H-12}" text-anchor="middle" font-size="12" fill="var(--muted)">${d[0]}</text>`;
+    pts.push([cx,y2(cp),cp]);});
+  s+=`<polyline points="${pts.map(p=>p[0]+","+p[1]).join(" ")}" fill="none" stroke="var(--slate)" stroke-width="2.5" stroke-linejoin="round"/>`;
+  pts.forEach((p,i)=>{s+=`<circle cx="${p[0]}" cy="${p[1]}" r="${i==6?5:3.5}" fill="var(--surface)" stroke="var(--slate)" stroke-width="2"><title>${(p[2]*100).toFixed(1)}p per LPV</title></circle>`});
+  s+=`<text x="${pts[6][0]+8}" y="${pts[6][1]-9}" font-size="12" font-weight="600" fill="var(--slate)" text-anchor="end">${(pts[6][2]*100).toFixed(1)}p</text>`;
+  s+=`</svg>`;document.getElementById("daily").innerHTML=s;
+})();
+
+document.getElementById("split").innerHTML=camps.map(c=>`<div class="sp-row"><span class="sp-name">${c.n}</span><span class="sp-num"><b>${fmt(c.l)}</b> · ${pct(c.l/totL)} · £${c.s.toFixed(2)} spend</span><div class="bar"><div style="width:${(c.l/886*100).toFixed(1)}%"></div></div></div>`).join("");
+
+const sorted=[...camps].sort((a,b)=>a.s/a.l-b.s/b.l), maxC=Math.max(...camps.map(c=>c.s/c.l));
+let rows=sorted.map((c,i)=>{const cp=c.s/c.l;const chip=i==0?' <span class="chip best">Best value</span>':(i==sorted.length-1?' <span class="chip watch">Highest cost</span>':'');
+ return `<tr><td class="cname">${c.n}${chip}<small>${c.f}</small></td><td>${gbp(c.s)}</td><td>${fmt(c.i)}</td><td>${fmt(c.r)}</td><td>${gbp(c.s/c.i*1000)}</td><td>${fmt(c.lc)}</td><td>${pct(c.lc/c.i)}</td><td><b>${fmt(c.l)}</b></td><td>${pct(c.l/c.lc)}</td><td><span class="cpl"><span class="mini"><div style="width:${(cp/maxC*100).toFixed(0)}%"></div></span>${gbp(cp,3)}</span></td></tr>`}).join("");
+rows+=`<tr class="tot"><td>Total</td><td>£196.74</td><td>24,928</td><td>19,206</td><td>£7.89</td><td>3,528</td><td>14.2%</td><td>2,843</td><td>80.6%</td><td>£0.069</td></tr>`;
+document.getElementById("camp").innerHTML=rows;
+
+document.getElementById("ads").innerHTML=ads.map(a=>`<tr><td class="cname">${a[0]}<small>${a[1]}</small></td><td>${gbp(a[2])}</td><td>${pct(a[2]/campSpend[a[1]])}</td><td>${fmt(a[3])}</td><td>${fmt(a[4])}</td><td>${gbp(a[2]/a[4],3)}</td></tr>`).join("");
+</script>
