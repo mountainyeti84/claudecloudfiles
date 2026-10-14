@@ -142,6 +142,17 @@ td.hl{color:var(--rust);font-weight:700}
 a{color:var(--rust)}
 :focus-visible{outline:2px solid var(--orange);outline-offset:3px}
 
+/* Andy character illustrations */
+.fig{float:right;width:210px;margin:4px 0 14px 26px;text-align:center}
+.fig.left{float:left;margin:4px 26px 14px 0}
+.fig.wide{width:270px}
+.fig.centre{float:none;width:72%;max-width:460px;margin:8px auto 18px}
+.fig img{display:block;width:100%;height:auto}
+.fig figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:8px;line-height:1.4}
+.box,.gap,.stats,.steps,.trio,.tbl,.flow,.pull,.ask,.logos,h3{clear:both}
+.cta-andy{width:min(240px,46vw);height:min(240px,46vw);margin-top:20px;border-radius:50%;background:radial-gradient(circle at 50% 55%,#FFE3CC 0%,#FFB27A 45%,rgba(255,107,0,.35) 68%,rgba(255,107,0,0) 72%);display:flex;align-items:flex-end;justify-content:center;margin-bottom:26px;overflow:visible}
+.cta-andy img{height:122%;width:auto;margin-bottom:-1%}
+
 @media (max-width:640px){
   body{font-size:16px}
   .txt{padding:44px 16px 56px}
@@ -151,10 +162,20 @@ a{color:var(--rust)}
   .op-num{font-size:110px}
   .leak-head .n{font-size:110px}
   .pull{font-size:21px}
+  .fig{width:150px;margin-left:16px}
+  .fig.left{margin:4px 16px 12px 0}
+  .fig.wide{width:180px}
+  .fig.centre{width:100%}
 }
 
 @media print{
   html,body{background:#fff}
+  .fig{width:44mm;margin-left:6mm}
+  .fig.left{margin:1mm 6mm 3mm 0}
+  .fig.wide{width:58mm}
+  .fig.centre{width:105mm}
+  .fig figcaption{font-size:6.5pt}
+  .cta-andy{width:58mm;height:58mm;margin-top:14mm}
   body{font-size:10.6pt;line-height:1.62}
   .opener{page:full;break-before:page;break-after:page;width:210mm;height:296.6mm;min-height:0;padding:24mm 20mm 20mm}
   .cover{break-before:auto}
@@ -207,6 +228,7 @@ a{color:var(--rust)}
 <section class="txt">
   <div class="lbl">// Before you read on</div>
   <h2>This was written for a fairly specific person.</h2>
+  <figure class="fig "><img src="assets/andy/wave.png" alt="Cartoon Andy waving hello"></figure>
   <p class="lead">You're already spending properly on Meta. Probably £10k a month or more, possibly a lot more. Meta isn't an experiment in your business any more. It's a line in the budget that somebody senior has to defend every quarter.</p>
   <p>If that's you, I'd guess some of the following sounds familiar:</p>
   <ul class="plain">
@@ -293,6 +315,7 @@ a{color:var(--rust)}
 <section class="txt">
   <p class="lead">2016 was a wonderful time to learn Facebook advertising, mainly because it was very easy to convince yourself you were a genius.</p>
   <p>Facebook leads cost about 14p. A 1% Lookalike Audience felt like actual witchcraft. And we all thought Messenger bots were about to replace email. (OK, I did. A little.) What a time to be alive.</p>
+  <figure class="fig wide"><img src="assets/andy/desk.png" alt="Cartoon Andy at his desk with a laptop showing a rising chart"></figure>
   <p>I was doing all of it myself. Building the website, writing the emails, making the ads, running the campaigns, setting up the funnels. There was no marketing department to hand anything to, no agency, no analyst. Just me, a laptop and a growing suspicion that I'd started a trekking company and accidentally become a marketer.</p>
   <p>The ads worked, in the sense that Ads Manager was full of lovely numbers. CTR up. CPC down. Leads coming in. Engagement flying. If you'd judged EverTrek's marketing purely on what Facebook told me, it was going brilliantly.</p>
   <p>But it was my money. And when it's your money, you're not really interested in CTR. You want to know what came out the other side.</p>
@@ -327,6 +350,7 @@ a{color:var(--rust)}
   <h3>Following the lead home</h3>
   <p>This is where I think EverTrek's marketing really started to grow up. We stopped thinking about Meta as a thing that produced leads, and started thinking about the whole route a person took:</p>
   <div class="flow"><span>Ad</span><i>→</i><span>Lead</span><i>→</i><span>Qualified lead</span><i>→</i><span>Conversation</span><i>→</i><span>Customer</span><i>→</i><span class="on">Revenue</span></div>
+  <figure class="fig left"><img src="assets/andy/stressed.png" alt="Cartoon Andy clutching his hair in frustration"><figcaption>Where are the bloody bookings?</figcaption></figure>
   <p>And once you look at it that way, you notice that most of the money is made or lost in the bits after Meta. What did they get after they downloaded the guide? Did anyone speak to them? How quickly? Did they come back? Did anything tell us when they did?</p>
   <p>When the numbers weren't working, I didn't really care which department owned the problem. I just wanted to find it. Sometimes it was the ads. Quite often, I found, it wasn't.</p>
   <div class="pull">If we're generating loads of cheap leads and nobody buys, that's not success. It's just a cheaper way of not selling anything.</div>
@@ -358,9 +382,11 @@ a{color:var(--rust)}
   <h3>Familiar beats polished</h3>
   <p>Here's why it mattered commercially. By the time someone was actually ready to book, we weren't just another trekking company they'd found on Google. We were those slightly strange people they'd been watching on Facebook for the last six months.</p>
   <p>And when you're asking someone to hand over thousands of pounds and trust you to get them safely halfway round the world and up a bloody great mountain, that matters a lot.</p>
+  <figure class="fig "><img src="assets/andy/yetipose.png" alt="Cartoon Andy doing the Yeti Pose: shaka hand, tongue out"><figcaption>The Yeti Pose. Still going.</figcaption></figure>
   <p>Little rituals grew out of it that nobody planned. The Yeti Pose. EverTrek neck buffs turning up in photos all over the world (some of them in places a neck buff was never designed to cover). People commenting "bingo" when Andy and Dave said one of their usual phrases. Customers stopped just consuming the content and started joining in.</p>
   <div class="pull">"Just showing up, having a chat and trying to be useful. Turns out that might have been marketing too."</div>
   <h3>What it did for the ads</h3>
+  <figure class="fig left"><img src="assets/andy/phone.png" alt="Cartoon Andy holding up a phone showing an ad"></figure>
   <p>This is the bit that's easy to miss if you think of "brand" and "performance" as separate budgets. The founder-led content gave our Meta ads something no competitor could copy. Real people, answering real worries, in a voice people already recognised.</p>
   <p>It also taught me that creative has more than one job. Most ads only ever try to do the first:</p>
   <div class="steps" style="grid-template-columns:repeat(4,minmax(0,1fr))">
@@ -389,6 +415,7 @@ a{color:var(--rust)}
 <section class="txt">
   <p class="lead">In the early years, there wasn't much between someone paying their deposit and turning up at the airport. Then the feedback started telling us that was a problem.</p>
   <p>Around 2018, feedback from an Everest Base Camp group told us people didn't feel prepared enough before they left. One customer mentioned a detailed physical binder she'd once had from another travel company.</p>
+  <figure class="fig "><img src="assets/andy/hiking.png" alt="Cartoon Andy trekking with a backpack and pole"></figure>
   <p>We could have got defensive. Instead we built a personalised Trip Planner. It ended up being about 80 pages long, with the customer's name on it, fitness plans, maps and practical advice. People carried it with them, scribbled notes in it, photographed it and shared it online.</p>
   <p>Over time we filled the rest of that gap too. Preparation emails, personalised videos, an app with maps and countdowns, Ask a Yeti, timed notifications, arrival messages, a members' area, training content, Tuesday Tune-In, podcasts. None of it came from a master plan. Together it became the glue between EverTrek and the customer.</p>
   <div class="pull">The space between purchase and delivery isn't dead time. It's where the relationship actually gets built.</div>
@@ -454,6 +481,7 @@ a{color:var(--rust)}
     <div class="stat"><span class="k">Paid social leads</span><div class="n">3,500+</div><div class="d">a month, up from 800–1,000</div></div>
     <div class="stat"><span class="k">Cost per lead</span><div class="n">£4→£4</div><div class="d">held flat while spend tripled</div></div>
   </div>
+  <figure class="fig "><img src="assets/andy/celebrate.png" alt="Cartoon Andy jumping and celebrating with confetti"></figure>
   <p>I'd love to tell you that was down to a brilliant campaign structure. I think it had a lot more to do with everything in the previous five chapters. Years of trust deposits change what scaling feels like. Meta was introducing people to a brand that a lot of them had already half-heard of, from a friend, a Live, a photo with a buff in it.</p>
   <h3>The bit that didn't stay inside Meta</h3>
   <p>Here's what really got my attention. As Meta spend climbed, our organic and paid search climbed with it. Search volume, leads and conversions were all up.</p>
@@ -478,6 +506,7 @@ a{color:var(--rust)}
   <p class="lead">This was a cool little customer journey I spotted recently, and it's become my favourite way of explaining why I don't trust short reporting windows.</p>
   <p>Not long ago, someone downloaded one of our guides from a Facebook ad. Then nothing. They didn't book. They didn't speak to sales. They didn't suddenly hand over thousands of pounds because Meta had shown them a particularly lovely picture of Everest. They just carried on with their life.</p>
   <p>But they stayed in our world. They got our emails. They saw our content. They had a look around now and again.</p>
+  <figure class="fig "><img src="assets/andy/shocked.png" alt="Cartoon Andy looking amazed, hands up"><figcaption>Nearly £18,000. From a "dead" lead.</figcaption></figure>
   <p>Months later, they came back and downloaded something else. This time, that second download triggered our sales team. We sent them a WhatsApp. Had a chat. And about a week later, they made nearly £18,000 worth of bookings.</p>
   <div class="steps">
     <div class="step"><span class="k">Day 0</span><b>Facebook ad</b><span>Downloads a guide. Doesn't buy.</span></div>
@@ -509,6 +538,7 @@ a{color:var(--rust)}
 </section>
 <section class="txt">
   <p class="lead">Most of what I know about paid social didn't come from running campaigns for clients. It came from needing the campaigns to work in my own business.</p>
+  <figure class="fig "><img src="assets/andy/tee.png" alt="Cartoon Andy in a The Ads Yeti t-shirt giving a thumbs up"></figure>
   <p>After a few years of other founders asking "how are you doing that?", I started helping a handful of them. Then a few more. And somewhere amongst all of that, The Ads Yeti appeared.</p>
   <p>Today we work with businesses like Bon Voyage and Absolute Escapes in travel, and Tŷ Hafan outside it. Between EverTrek and Bon Voyage alone, the work has generated hundreds of thousands of pounds in bookings and leads. But the thing I find most useful isn't the results. It's what I keep seeing when I open up an account for the first time.</p>
   <h3>Same problems, bigger numbers</h3>
@@ -551,6 +581,7 @@ a{color:var(--rust)}
   </div>
   <p>And then one question. Not a fix. A question you can put to your team, your agency or yourself, that should be easy to answer confidently if everything's fine.</p>
   <h3>What a leak actually costs</h3>
+  <figure class="fig centre"><img src="assets/andy/money.png" alt="Cartoon Andy shovelling banknotes into a machine labelled Meta Ads"></figure>
   <p>It's worth doing the maths once, because a "small" inefficiency stops being small surprisingly quickly at this level of spend.</p>
   <div class="tbl"><table>
     <tr><th>Monthly Meta spend</th><th>Annual spend</th><th>10% leak</th><th>20% leak</th></tr>
@@ -661,6 +692,7 @@ a{color:var(--rust)}
   <div class="lbl">// Which one is it?</div>
   <h2>Spotting a leak is the easy bit.</h2>
   <p class="lead">If you've read all seven and recognised a few, you're in very good company. Almost every account we open has a bit of each.</p>
+  <figure class="fig "><img src="assets/andy/thinking.png" alt="Cartoon Andy thinking, hand on chin, with a lightbulb"></figure>
   <p>The hard part, and the bit that actually makes money, is working out which one is the <strong>constraint</strong>. The one that, if you fixed it, would let everything else work harder. Because fixing the wrong one first is how businesses spend six months being very busy and slightly disappointed.</p>
   <p>Improve the creative while the follow-up is broken, and you'll generate more leads that don't convert. Fix the landing page while the measurement is wrong, and you may not even be able to tell it worked. Scale spend while the offer is weak, and you'll just pay more to be ignored by more people.</p>
   <div class="box">
@@ -733,6 +765,7 @@ a{color:var(--rust)}
 <section class="txt sec">
   <div class="lbl">// Chapter 11 · The self-audit</div>
   <h2>Twelve questions for your next Meta review.</h2>
+  <figure class="fig "><img src="assets/andy/thumbs.png" alt="Cartoon Andy giving a thumbs up"></figure>
   <p class="lead">There's no score at the end of this, and no "0–4 means disaster". Just tick the ones you can answer confidently today, with evidence rather than a feeling.</p>
   <ol class="checklist">
     <li><span>We can name which campaigns produce our highest-value customers, not just our cheapest conversions.</span><i></i></li>
@@ -755,6 +788,7 @@ a{color:var(--rust)}
 <section class="txt sec">
   <div class="lbl">// Chapter 12</div>
   <h2>If this were my £600k, here's where I'd look first.</h2>
+  <figure class="fig "><img src="assets/andy/arms.png" alt="Cartoon Andy standing with arms crossed, smiling"></figure>
   <p class="lead">Say you're spending £50k a month on Meta. That's £600k a year. If it were EverTrek's money, this is roughly the order I'd want to understand things in, before touching a single campaign.</p>
   <ul class="plain">
     <li><strong>Where the money actually goes</strong> versus where genuinely new customers come from.</li>
@@ -775,7 +809,7 @@ a{color:var(--rust)}
 <section class="opener">
   <div class="op-lbl">// A second opinion</div>
   <div class="op-spacer" style="min-height:30px"></div>
-  <img src="assets/yeti.jpg" alt="" style="width:46%;max-width:300px;border-radius:16px;margin-bottom:28px">
+  <div class="cta-andy"><img src="assets/andy/point.png" alt="Cartoon Andy pointing"></div>
   <div class="op-title">Let Andy take a look.</div>
   <p class="op-dek">You're already spending £10k+ a month on Meta. You don't need another agency telling you to spend more.</p>
   <p class="op-dek" style="font-size:16.5px;margin-top:16px">We'll take an independent look at your Meta performance, creative, offer, funnel and conversion journey, and show you where we believe revenue is being left on the table. If everything looks great, we'll tell you. If it doesn't, we'll show you where we'd start.</p>

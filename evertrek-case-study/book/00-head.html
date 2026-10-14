@@ -142,6 +142,17 @@ td.hl{color:var(--rust);font-weight:700}
 a{color:var(--rust)}
 :focus-visible{outline:2px solid var(--orange);outline-offset:3px}
 
+/* Andy character illustrations */
+.fig{float:right;width:210px;margin:4px 0 14px 26px;text-align:center}
+.fig.left{float:left;margin:4px 26px 14px 0}
+.fig.wide{width:270px}
+.fig.centre{float:none;width:72%;max-width:460px;margin:8px auto 18px}
+.fig img{display:block;width:100%;height:auto}
+.fig figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:8px;line-height:1.4}
+.box,.gap,.stats,.steps,.trio,.tbl,.flow,.pull,.ask,.logos,h3{clear:both}
+.cta-andy{width:min(240px,46vw);height:min(240px,46vw);margin-top:20px;border-radius:50%;background:radial-gradient(circle at 50% 55%,#FFE3CC 0%,#FFB27A 45%,rgba(255,107,0,.35) 68%,rgba(255,107,0,0) 72%);display:flex;align-items:flex-end;justify-content:center;margin-bottom:26px;overflow:visible}
+.cta-andy img{height:122%;width:auto;margin-bottom:-1%}
+
 @media (max-width:640px){
   body{font-size:16px}
   .txt{padding:44px 16px 56px}
@@ -151,10 +162,20 @@ a{color:var(--rust)}
   .op-num{font-size:110px}
   .leak-head .n{font-size:110px}
   .pull{font-size:21px}
+  .fig{width:150px;margin-left:16px}
+  .fig.left{margin:4px 16px 12px 0}
+  .fig.wide{width:180px}
+  .fig.centre{width:100%}
 }
 
 @media print{
   html,body{background:#fff}
+  .fig{width:44mm;margin-left:6mm}
+  .fig.left{margin:1mm 6mm 3mm 0}
+  .fig.wide{width:58mm}
+  .fig.centre{width:105mm}
+  .fig figcaption{font-size:6.5pt}
+  .cta-andy{width:58mm;height:58mm;margin-top:14mm}
   body{font-size:10.6pt;line-height:1.62}
   .opener{page:full;break-before:page;break-after:page;width:210mm;height:296.6mm;min-height:0;padding:24mm 20mm 20mm}
   .cover{break-before:auto}
