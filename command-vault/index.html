@@ -158,9 +158,6 @@ a{color:var(--ice)}
 .nowline{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10.5px;color:var(--ice);letter-spacing:.12em;padding:2px 6px}
 .nowline::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--ice),transparent)}
 .daysplit{margin-top:6px}
-.tabs{display:flex;gap:4px;background:var(--ink);padding:3px;border-radius:9px;border:1px solid var(--line)}
-.tabs button{border:0;background:transparent;font-size:12px;padding:4px 9px;border-radius:7px;color:var(--mist)}
-.tabs button[aria-selected="true"]{background:var(--vault-2);color:var(--frost)}
 .mails{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
 .mail{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;padding:9px 6px;border-radius:9px;align-items:start}
 .mail:hover{background:var(--vault-2)}
@@ -171,7 +168,9 @@ a{color:var(--ice)}
 .mail a.subj{display:block;color:var(--frost);text-decoration:none;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .mail a.subj:hover{color:var(--ice)}
 .mail p{margin:2px 0 0;font-size:12.5px;color:var(--mist);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere}
-.mail .imp{color:var(--ember)}
+.mail .host{font-family:var(--mono);font-size:10.5px;color:var(--mist);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.mail .meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.tag.ev{color:var(--ink);background:var(--ice);border-color:var(--ice)}
 .count{font-family:var(--mono);font-size:11px;color:var(--ice)}
 
 /* brief */
@@ -352,11 +351,7 @@ kbd{font-family:var(--mono);font-size:11px;border:1px solid var(--line);border-b
       <section class="panel" aria-labelledby="iTitle">
         <header>
           <h2 id="iTitle"><span class="code">BAY 04</span>Inbox radar</h2>
-          <div class="tabs" role="tablist" aria-label="Inbox filter">
-            <button role="tab" data-f="primary" aria-selected="true">Primary</button>
-            <button role="tab" data-f="important" aria-selected="false">Important</button>
-            <button role="tab" data-f="all" aria-selected="false">All</button>
-          </div>
+          <span class="label">People &amp; EverTrek only</span>
         </header>
         <div id="mailBody"><div class="status">Scanning your inbox…</div></div>
       </section>
@@ -399,7 +394,7 @@ kbd{font-family:var(--mono);font-size:11px;border:1px solid var(--line);border-b
 const $ = s => document.querySelector(s);
 const NINETY = 90 * 60000;
 const PRIO = ["BIG ROCK", "MUST", "NICE"];
-const S = { days: {}, coll: null, newP: 1, cal: { state: "loading" }, mail: { state: "loading" }, mailFilter: "primary", mcp: null };
+const S = { days: {}, coll: null, newP: 1, cal: { state: "loading" }, mail: { state: "loading" }, mcp: null };
 
 /* ---------------- dates ---------------- */
 const pad = n => String(n).padStart(2, "0");
@@ -652,9 +647,11 @@ document.addEventListener("click", async e => {
   if (p) { try { const perms = await claude.use("permissions"); perms && perms.manage(); } catch {} }
   if (a && S.mcp) {
     const w = a.dataset.allow; a.disabled = true;
-    const spec = w === "cal" ? calSpec() : mailSpec();
-    try { const r = await S.mcp.callTool(spec.server, spec.tool, spec.input); (w === "cal" ? onCal : onMail)({ type: "data", result: r }); }
-    catch (err) { (w === "cal" ? onCal : onMail)({ type: "error", error: err }); }
+    const jobs = w === "cal" ? [[calSpec(), onCal]] : MAIL_SRC.map(src => [mailSpec(src), ev => onMail(src, ev)]);
+    for (const [spec, done] of jobs) {
+      try { done({ type: "data", result: await S.mcp.callTool(spec.server, spec.tool, spec.input) }); }
+      catch (err) { done({ type: "error", error: err }); }
+    }
   }
 });
 const stamp = r => (r && r.cache && r.cache.storedAt) || Date.now();
@@ -736,61 +733,93 @@ $("#calBody").addEventListener("click", e => {
   if (addTask("Prep: " + b.dataset.prep, 1, "cal")) toast("Added prep to missions");
 });
 
-/* mail */
-const QUERIES = {
-  primary: "in:inbox is:unread category:primary newer_than:3d",
-  important: "in:inbox is:unread is:important newer_than:7d",
-  all: "in:inbox is:unread newer_than:2d",
+/* mail: the top 5 that need you, from real people and EverTrek only */
+const HOME_DOMAIN = "evertrek.co.uk";
+const MAIL_Q = {
+  people: "in:inbox is:unread newer_than:7d -category:promotions -category:social -category:updates -category:forums -from:(noreply OR no-reply OR donotreply OR notifications OR newsletter OR mailer-daemon)",
+  evertrek: "in:inbox is:unread newer_than:14d from:" + HOME_DOMAIN,
 };
-let mailUnsub = null;
-function mailSpec() { return { server: GM, tool: "search_threads", input: { query: QUERIES[S.mailFilter], pageSize: 15 } }; }
+const MAIL_SRC = Object.keys(MAIL_Q);
+S.mailSrc = {};
+let mailUnsubs = [];
+function mailSpec(src = "people") { return { server: GM, tool: "search_threads", input: { query: MAIL_Q[src], pageSize: 40 } }; }
 function watchMail() {
-  if (!S.mcp) return; if (mailUnsub) mailUnsub();
-  const sp = mailSpec(); S.mail = { state: "loading" }; $("#mailBody").innerHTML = '<div class="status">Scanning your inbox…</div>';
-  mailUnsub = S.mcp.watchTool(sp.server, sp.tool, sp.input, onMail, { refetchInterval: 5 * 60000 });
+  if (!S.mcp) return; mailUnsubs.forEach(u => u()); mailUnsubs = [];
+  MAIL_SRC.forEach(src => {
+    S.mailSrc[src] = { state: "loading" }; const sp = mailSpec(src);
+    mailUnsubs.push(S.mcp.watchTool(sp.server, sp.tool, sp.input, ev => onMail(src, ev), { refetchInterval: 5 * 60000 }));
+  });
 }
-function onMail(ev) {
-  if (ev.type === "data") S.mail = { state: "ok", data: ev.result.payload, at: stamp(ev.result) };
-  else { const keep = !DENY.has(ev.error.code) && S.mail.data; S.mail = keep ? { ...S.mail, warn: ev.error } : { state: "err", error: ev.error }; }
+function onMail(src, ev) {
+  const cur = S.mailSrc[src] || {};
+  if (ev.type === "data") S.mailSrc[src] = { state: "ok", data: ev.result.payload, at: stamp(ev.result) };
+  else { const keep = !DENY.has(ev.error.code) && cur.data; S.mailSrc[src] = keep ? { ...cur, warn: ev.error } : { state: "err", error: ev.error }; }
+  const v = MAIL_SRC.map(k => S.mailSrc[k] || { state: "loading" }); const ok = v.filter(x => x.state === "ok");
+  if (ok.length) S.mail = { state: "ok", top: rankMail(ok.flatMap(x => (x.data && x.data.threads) || [])), at: Math.min(...ok.map(x => x.at)), warn: v.some(x => x.warn || x.state === "err") };
+  else if (v.some(x => x.state === "loading")) S.mail = { state: "loading" };
+  else S.mail = { state: "err", error: v.find(x => x.error).error };
   renderMail();
 }
+// A sender counts as a person when the address looks like someone's name rather than a role inbox or a bulk-mail host.
+const ROLE = /^(info|hello|hi|hey|sales|support|help|team|office|admin|accounts?|billing|invoices?|events?|news|marketing|contact|enquiries|enquiry|bookings?|reservations?|system|mail|mailer|bounce|community|careers|jobs|partners?|press|media|orders?|shop|store|service|customerservice|care|feedback|updates?|alerts?|reply|crm|digest|webinars?|success|growth|wtm|e|[a-z]{2}-support)$/i;
+const BULK_HOST = /^(mail|email|e|em|m|info|news|outbound|app|mkt|marketing|send|bounce|notify|notifications|go|hello|reply|crm|mg|sg)\./i;
+const PERSONAL_HOST = /(^|\.)(gmail|googlemail|outlook|hotmail|live|icloud|me|yahoo|btinternet|aol)\./i;
+function parseAddr(s) {
+  s = String(s || ""); const m = s.match(/<([^>]+)>/);
+  const addr = (m ? m[1] : s).trim().toLowerCase(); const name = m ? s.slice(0, s.indexOf("<")).replace(/"/g, "").trim() : "";
+  const [local = "", host = ""] = addr.split("@"); return { addr, local, host, name };
+}
+const nameFrom = p => p.name || p.local.split(/[._-]+/).filter(Boolean).map(w => w[0].toUpperCase() + w.slice(1)).join(" ") || p.addr;
+const isMine = m => (m.labelIds || []).includes("SENT");
+function rankMail(threads) {
+  const seen = new Set(), out = []; let filtered = 0;
+  threads.forEach(t => {
+    if (seen.has(t.id)) return; seen.add(t.id);
+    const msgs = t.messages || [], inbound = msgs.filter(m => !isMine(m)), x = inbound[inbound.length - 1]; if (!x) return;
+    const p = parseAddr(x.sender);
+    const home = p.host === HOME_DOMAIN || p.host.endsWith("." + HOME_DOMAIN);
+    const person = !ROLE.test(p.local) && !BULK_HOST.test(p.host) && !/[+=]|\d{4,}/.test(p.local);
+    if (!home && !person) { filtered++; return; }
+    const replied = msgs.some(isMine);
+    const imp = inbound.some(m => (m.labelIds || []).includes("IMPORTANT"));
+    const senders = new Set(inbound.map(m => parseAddr(m.sender).addr));
+    const chaser = !replied && !imp && inbound.length >= 2 && senders.size === 1; // repeated follow-ups you never answered: usually a cold pitch
+    const score = (home ? (person ? 4 : 2) : 0) + (replied ? 4 : 0) + (imp ? 3 : 0) + (senders.size > 1 ? 1 : 0) + (PERSONAL_HOST.test(p.host) ? 1 : 0) - (chaser ? 3 : 0);
+    if (!home && score < 2) { filtered++; return; }
+    out.push({ t, x, p, home, replied, imp, score, ts: Date.parse(x.date) || 0, name: home && !person ? "EverTrek " + p.local : nameFrom(p) });
+  });
+  out.sort((a, b) => b.score - a.score || b.ts - a.ts);
+  return { list: out.slice(0, 5), more: Math.max(0, out.length - 5), filtered };
+}
 const HUES = ["#7FE3FF", "#FFB547", "#5BE4A8", "#C9A7FF", "#FF8A7A", "#9FD0FF"];
-function cleanSender(s) { s = String(s || ""); const m = s.match(/^"?([^"<]+?)"?\s*<([^>]+)>/); const name = m ? m[1].trim() : s.split("@")[0]; return { name: name || s, addr: m ? m[2] : s }; }
 function renderMail() {
   const body = $("#mailBody"); const m = S.mail;
   if (m.state === "loading") return;
   if (m.state === "off") { body.innerHTML = `<div class="status">Open this vault on claude.ai to connect Gmail.</div>`; return; }
   if (m.state === "err") { body.innerHTML = errHtml(GM, m.error, "mail"); return; }
-  const th = (m.data && m.data.threads) || [];
-  if (!th.length) { body.innerHTML = `<div class="empty">Inbox zero on this radar. Nothing unread needs you.</div>`; return; }
-  const est = m.data.resultCountEstimate;
-  body.innerHTML = `<div class="row"><span class="count">${th.length}${est && +est > th.length ? " of ~" + esc(est) : ""} unread</span><span class="stale" style="margin-left:auto">updated ${ago(m.at)}</span></div>`
-    + (m.warn ? `<div class="stale" style="color:var(--warn)">Couldn't refresh. Showing what we last saw.</div>` : "")
-    + `<ul class="mails">${th.map(t => {
-      const msgs = t.messages || []; const x = msgs[msgs.length - 1] || {};
-      const s = cleanSender(x.sender); const hue = HUES[[...s.addr].reduce((a, c) => a + c.charCodeAt(0), 0) % HUES.length];
-      const dt = x.date ? new Date(x.date) : null; const imp = (x.labelIds || []).includes("IMPORTANT");
-      const subj = x.subject || "(no subject)"; const added = day().tasks.some(k => k.t === "Reply: " + subj);
+  const { list, more, filtered } = m.top;
+  const note = `<div class="stale">${filtered ? `Filtered out ${filtered} marketing &amp; automated` : "Nothing filtered"}${more ? ` · ${more} more from people` : ""}</div>`;
+  if (!list.length) { body.innerHTML = `<div class="empty">No unread email from people or EverTrek. You're clear.</div>` + note; return; }
+  body.innerHTML = `<div class="row"><span class="count">Top ${list.length} that need you</span><span class="stale" style="margin-left:auto">updated ${ago(m.at)}</span></div>`
+    + (m.warn ? `<div class="stale" style="color:var(--warn)">Couldn't refresh everything. Showing what we last saw.</div>` : "")
+    + `<ol class="mails">${list.map((r, i) => {
+      const { t, x, p } = r; const hue = r.home ? "var(--ice)" : HUES[[...p.addr].reduce((a, c) => a + c.charCodeAt(0), 0) % HUES.length];
+      const dt = r.ts ? new Date(r.ts) : null; const subj = x.subject || "(no subject)"; const added = day().tasks.some(k => k.t === "Reply: " + subj);
       const when = dt ? (keyOf(dt) === todayKey() ? fmtTime(dt) : dt.toLocaleDateString([], { day: "numeric", month: "short" })) : "";
+      const chips = (r.home ? '<span class="tag ev">EVERTREK</span>' : "") + (r.replied ? '<span class="tag">IN CONVERSATION</span>' : "") + (r.imp ? '<span class="tag rsvp">IMPORTANT</span>' : "");
       return `<li class="mail">
-        <span class="av" style="background:${hue}">${esc(s.name.replace(/[^A-Za-z0-9]/g, "").slice(0, 2).toUpperCase() || "@")}</span>
-        <div style="min-width:0"><div class="who"><b>${esc(s.name)}</b>${imp ? '<span class="imp" title="Marked important">●</span>' : ""}<time>${when}</time></div>
+        <span class="av" style="background:${hue}" aria-label="Rank ${i + 1}">${i + 1}</span>
+        <div style="min-width:0"><div class="who"><b>${esc(r.name)}</b><span class="host">${esc(p.host)}</span><time>${when}</time></div>
           <a class="subj" href="${esc(t.viewUrl || x.viewUrl || "https://mail.google.com")}" target="_blank" rel="noopener">${esc(subj)}</a>
-          <p>${esc((x.snippet || "").replace(/[͏‌​\s]+/g, " ").trim())}</p></div>
+          <p>${esc((x.snippet || "").replace(/[͏‌​\s]+/g, " ").trim())}</p>
+          ${chips ? `<div class="meta">${chips}</div>` : ""}</div>
         <button class="mini${added ? " added" : ""}" data-reply="${esc(subj)}" ${added ? "disabled" : ""}>${added ? "On list" : "+ Mission"}</button>
-      </li>`; }).join("")}</ul>`;
+      </li>`; }).join("")}</ol>` + note;
 }
 $("#mailBody").addEventListener("click", e => {
   const b = e.target.closest("[data-reply]"); if (!b) return;
   if (addTask("Reply: " + b.dataset.reply, 1, "mail")) toast("Turned that email into a mission");
 });
-document.querySelectorAll('.tabs [role="tab"]').forEach(b => b.addEventListener("click", () => {
-  S.mailFilter = b.dataset.f;
-  document.querySelectorAll('.tabs [role="tab"]').forEach(x => x.setAttribute("aria-selected", String(x === b)));
-  try { localStorage.setItem("yetiVault.mailFilter", S.mailFilter); } catch {}
-  watchMail();
-}));
-try { const f = localStorage.getItem("yetiVault.mailFilter"); if (QUERIES[f]) { S.mailFilter = f; document.querySelectorAll('.tabs [role="tab"]').forEach(x => x.setAttribute("aria-selected", String(x.dataset.f === f))); } } catch {}
 
 async function bootMcp() {
   const mcp = window.claude && window.claude.use ? await claude.use("mcp") : null;
@@ -810,18 +839,18 @@ async function brief() {
   btn.disabled = true; out.textContent = "Thinking…";
   const d = day(); const now = new Date();
   const evs = S.cal.state === "ok" ? parseEvents(S.cal.data).filter(e => !e.allDay && e.e > now && keyOf(e.s) === todayKey()).map(e => `${fmtTime(e.s)}-${fmtTime(e.e)} ${e.title}`) : [];
-  const mails = S.mail.state === "ok" ? ((S.mail.data && S.mail.data.threads) || []).slice(0, 10).map(t => { const x = (t.messages || []).slice(-1)[0] || {}; return `${cleanSender(x.sender).name}: ${x.subject || ""}`; }) : [];
+  const mails = S.mail.state === "ok" ? S.mail.top.list.map(r => `${r.name}${r.home ? " (EverTrek)" : ""}: ${r.x.subject || ""}`) : [];
   const ctx = {
     now: now.toLocaleString(), deep_work_minutes_today: Math.floor(deepTotal(d) / 60000), did_90: did90(d), streak_90: streak(did90),
     open_missions: d.tasks.filter(t => !t.done).map(t => `[${PRIO[t.p]}] ${t.t}`), done_missions: d.tasks.filter(t => t.done).length,
-    remaining_meetings_today: evs, unread_emails: mails,
+    remaining_meetings_today: evs, top_emails_from_people: mails,
   };
   const prompt = `You are the Yeti, a blunt, warm productivity coach inside Andy's command vault at Ads Yeti (a performance-ads agency). Using the data below, write a short plan for the rest of today.
 Format (plain text, no markdown headers, max 110 words):
 1. One line verdict on how the day is going.
 2. "Next move:" the single most important thing to do now.
 3. "Slot your 90:" the best free window before/between meetings, or say it's done.
-4. "Emails that matter:" up to 2 that look like real people needing a reply (ignore newsletters/promos), or "None".
+4. "Emails that matter:" the 1-2 of the top emails below most worth replying to first, or "None".
 5. One short line of encouragement mentioning the streak.
 DATA:
 ${JSON.stringify(ctx, null, 1)}`;
