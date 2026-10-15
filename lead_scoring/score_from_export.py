@@ -15,6 +15,7 @@ import datetime as dt
 import glob
 import json
 import os
+import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -41,6 +42,14 @@ def load(raw):
     return out, cf, stages
 
 
+RECENT_BOOKING_TAG = re.compile(r"purchased|postbooking|trekbooking$|new booking", re.I)
+
+
+def stage_weight(name):
+    n = name.lower()
+    return 25 if "high potential" in n else 18 if "qualified" in n else 12 if "follow up" in n else 6
+
+
 def to_lead(c, cf_names, stages):
     custom = {}
     for fid, v in (c.get("customFields") or {}).items():
@@ -55,9 +64,14 @@ def to_lead(c, cf_names, stages):
     for o in c.get("opportunities") or []:
         if o.get("status") == "open":
             st = stages.get(o.get("pipelineStageId")) or {}
-            open_opps.append({"stage": "%s / %s" % (st.get("pipeline", "?"), st.get("stage", "?")) if st else None,
-                              "value": o.get("monetaryValue")})
-    tags = c.get("tags") or []
+            name = st.get("stage", "")
+            if name == "Unqualified Leads":  # auto-created for every new lead: not a signal
+                continue
+            open_opps.append({"stage": "%s / %s" % (st.get("pipeline", "?"), name or "?") if st else None,
+                              "value": o.get("monetaryValue"), "stage_weight": stage_weight(name)})
+    tags = list(c.get("tags") or [])
+    if any("unsubscribe" in k.lower() for k in custom):
+        tags.append("unsubscribed from all lists")
     att = c.get("attribution") or {}
     a = {"sessionSource": att.get("sessionSource"), "utmSource": att.get("utmSource"),
          "utmMedium": att.get("utmMedium"), "gclid": att.get("hasGclid"), "msclkid": att.get("hasMsclkid")}
@@ -92,6 +106,10 @@ def to_lead(c, cf_names, stages):
         "no_show_or_cancelled": 0,
         "notes": [],
         "open_opportunities": open_opps,
+        "guides": sorted({t for t in tags if "guide" in t.lower() and "received" in t.lower()}),
+        "hours_active_after_signup": None if not (g.ts(c.get("lastActivity")) and g.ts(c.get("dateAdded"))) else
+        round((g.ts(c.get("lastActivity")) - g.ts(c.get("dateAdded"))).total_seconds() / 3600, 1),
+        "recent_booking_tag": any(RECENT_BOOKING_TAG.search(t) for t in tags),
         "past_bookings": [w.get("tripInfo") or w.get("name") for w in won],
         "previous_customer_older_than_90d": bool(won) or any(t.lower() == "customer" for t in tags),
         "dnd": bool(c.get("dnd")) or len(c.get("dndChannelsActive") or []) >= 3,
@@ -130,7 +148,10 @@ def main():
         leads = [to_lead(c, cf, stages) for c in contacts]
         cutoff = g.NOW - dt.timedelta(days=g.WON_LOOKBACK_DAYS)
         eligible = [l for l in leads if not won_recently(l, cutoff)]
-        meta = {"pulled": len(leads), "excluded_won": len(leads) - len(eligible),
+        n_won = len(leads) - len(eligible)
+        eligible = [l for l in eligible if not l["recent_booking_tag"]]
+        meta = {"pulled": len(leads), "excluded_won": n_won + (len(leads) - n_won - len(eligible)),
+                "excluded_won_opp": n_won, "excluded_booking_tag": len(leads) - n_won - len(eligible),
                 "oldest_added": contacts[-1].get("dateAdded") if contacts else None,
                 "newest_added": contacts[0].get("dateAdded") if contacts else None}
         for l in eligible:

@@ -253,7 +253,10 @@ def signal_score(l):
     s = 0
     s += 25 if l["upcoming_appointments"] else 0
     s += min(15, 8 * l["trip_chats_booked"])
-    s += 15 if l["open_opportunities"] else 0
+    s += max([o.get("stage_weight", 15) for o in l["open_opportunities"]] or [0])
+    h = l.get("hours_active_after_signup")
+    s += 0 if h is None else 8 if h > 24 else 4 if h > 1 else 0
+    s += 5 if len(l.get("guides") or []) > 1 else 0
     s += 10 if l["previous_customer_older_than_90d"] else 0
     d = l["days_since_last_inbound_msg"]
     s += 0 if d is None else 20 if d <= 7 else 14 if d <= 30 else 7 if d <= 90 else 0
@@ -289,12 +292,15 @@ SCORE_PROMPT = """Score each lead below. For each, return:
   id, activity_level (one of: Hot, Warm, Engaged, Cool, Dormant), score (0-100 propensity to book in next 60 days),
   key_signals (max 3 short phrases citing the data), recommended_action (one short phrase).
 
-Activity level guide:
-  Hot = upcoming appointment/trip chat, open opportunity in late stage, or inbound reply in last 7 days.
-  Warm = inbound engagement or activity in last 30 days, clear trip interest.
-  Engaged = some activity in last 90 days but no strong buying signal.
-  Cool = added/active 90-180 days ago, little engagement.
-  Dormant = no meaningful activity, negative tags, DND.
+Activity level guide (most leads are only days old, so judge depth of engagement, not just recency):
+  Hot = booking-adjacent action: save-a-space, trip enquiry, upcoming trip chat, qualified/high-potential sales
+        stage, or Plan Builder answers showing near-term travel timing / ready to book.
+  Warm = engagement beyond the free guide: Plan Builder completed, webinar or Couch-to registration, website
+        form submission, several different guides, a manual follow-up stage, or real activity after sign-up.
+  Engaged = one guide plus some activity after sign-up (hours_active_after_signup > 1).
+  Cool = one guide download and nothing since.
+  Dormant = unsubscribed, DND, no usable contact details, or clearly not a fit.
+Use the full 0-100 range: a single guide download with nothing else is about 15-30.
 signal_score is a heuristic 0-100 computed from the same data; adjust it with judgement.
 
 Return a JSON array, one object per lead, same order. Leads:
