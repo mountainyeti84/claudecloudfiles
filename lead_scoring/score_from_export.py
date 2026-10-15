@@ -182,6 +182,7 @@ def main():
     st = json.load(open(state))
     meta, leads = st["meta"], st["leads"]
     g.COST.update(st.get("cost") or {})
+    g.COST.setdefault("models", {})
     if a.activity and os.path.exists(a.activity):
         act = json.load(open(a.activity))
         for l in leads:

@@ -61,23 +61,46 @@ def _load_openrouter():
 
 
 OR = None
-COST = {"usd": 0.0, "calls": 0}
+COST = {"usd": 0.0, "calls": 0, "models": {}}
+# Claude does the in-session work; OpenRouter is only for non-Claude models.
+NO_CLAUDE_PROVIDERS = ["Anthropic", "Amazon Bedrock", "Google Vertex"]
+FALLBACK_MODEL = "deepseek/deepseek-v4-pro-0813"
+
+
+def _call(model, prompt, system, max_tokens, timeout, block_claude):
+    payload = {"model": model, "max_tokens": max_tokens, "temperature": 0.2, "usage": {"include": True},
+               "messages": [{"role": "system", "content": system}, {"role": "user", "content": prompt}]}
+    if block_claude:
+        payload["provider"] = {"ignore": NO_CLAUDE_PROVIDERS}
+    d = OR.request("POST", "/chat/completions", payload, timeout=timeout)
+    if "error" in d or not d.get("choices"):
+        raise OR.ApiError(json.dumps(d)[:300])
+    u = d.get("usage") or {}
+    if isinstance(u.get("cost"), (int, float)):
+        COST["usd"] += u["cost"]
+    COST["calls"] += 1
+    served = d.get("model") or model
+    COST["models"][served] = COST["models"].get(served, 0) + 1
+    return served, d["choices"][0]["message"].get("content") or ""
 
 
 def jev(prompt, system, max_tokens=8000, timeout=300):
-    for attempt in range(2):
+    """Ask Jev; never accept a Claude-served answer (re-route, then fall back to a pinned non-Claude model)."""
+    attempts = [(JEV, True), (JEV, True), (FALLBACK_MODEL, True)]
+    last = None
+    for model, block in attempts:
         try:
-            r = OR.chat(JEV, prompt, system, max_tokens, 0.2, timeout)
-            u = r.get("usage") or {}
-            if isinstance(u.get("cost"), (int, float)):
-                COST["usd"] += u["cost"]
-            COST["calls"] += 1
-            return r["content"]
+            served, text = _call(model, prompt, system, max_tokens, timeout, block)
         except OR.ApiError as e:
-            if attempt:
-                raise
-            print("  Jev error, retrying once:", str(e)[:200], file=sys.stderr)
-            time.sleep(5)
+            last = e
+            print("  %s error: %s" % (model, str(e)[:200]), file=sys.stderr)
+            time.sleep(3)
+            continue
+        if "anthropic" in served.lower() or "claude" in served.lower():
+            print("  Jev routed to %s; re-routing away from Claude" % served, file=sys.stderr)
+            continue
+        return text
+    raise last or OR.ApiError("no non-Claude model answered")
 
 
 def parse_json(text):
