@@ -1,6 +1,6 @@
 ---
 name: openrouter
-description: Consult a non-Claude model (DeepSeek, Gemini, GLM, Qwen, Kimi, Jev, GPT, Grok, etc.) through OpenRouter for a second opinion, or compare two models. Only runs when the user explicitly types /openrouter.
+description: Get a second opinion from a non-Claude model (DeepSeek, Gemini, GLM, Qwen, Kimi, Jev, GPT, Grok) via OpenRouter, or compare two models. Runs only when the user types /openrouter.
 argument-hint: "[model|compare [modelA,modelB]] <task>"
 disable-model-invocation: true
 allowed-tools:
