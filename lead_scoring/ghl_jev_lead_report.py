@@ -243,8 +243,8 @@ def enrich(client, c, cf_names, open_opps, won_before):
     }
 
 
-INTENT_TAG = re.compile(r"brochure|enquir|quote|deposit|trip.?chat|webinar|interest|everest|kili|machu|"
-                        r"annapurna|trek|booking|abandon|checkout|price|date", re.I)
+INTENT_TAG = re.compile(r"brochure|enquir|quote|deposit|trip.?chat|webinar|registered|plan builder|couchto|"
+                        r"saveaspace|interest|booking|abandon|checkout|price|dates", re.I)
 NEGATIVE_TAG = re.compile(r"unsub|bounce|spam|not.?interested|dnd|lost|competition|outdoorexpoentry", re.I)
 
 
@@ -261,6 +261,9 @@ def signal_score(l):
     s += 0 if d is None else 10 if d <= 7 else 6 if d <= 30 else 2 if d <= 90 else 0
     s += min(10, 3 * sum(1 for t in l["tags"] if INTENT_TAG.search(t)))
     s += 5 if l["unread_inbound"] else 0
+    h = l.get("hours_since_added")
+    s += 0 if h is None else 8 if h <= 48 else 4 if h <= 96 else 0
+    s += 6 if any("plan builder" in k.lower() or "readiness" in k.lower() for k in l["custom"]) else 0
     s += 3 if l["phone"] else 0
     s -= 8 * sum(1 for t in l["tags"] if NEGATIVE_TAG.search(t))
     s -= 5 * l["no_show_or_cancelled"]
