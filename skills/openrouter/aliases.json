@@ -1,0 +1,27 @@
+{
+  "_comment": "Aliases resolve against the LIVE OpenRouter model list. 'prefer' pins exact IDs (first available wins); otherwise the newest model (by OpenRouter 'created' date) whose ID matches 'match' and not 'exclude' is used. :batch, :free, image, vision and -exp variants are never auto-picked; pass an exact ID to use them.",
+  "aliases": {
+    "deepseek":       {"match": "^deepseek/deepseek-v\\d", "exclude": "flash", "note": "DeepSeek flagship (Pro line)"},
+    "deepseek-flash": {"match": "^deepseek/deepseek-v\\d[\\d.]*-flash", "note": "Cheap, fast DeepSeek"},
+    "deepseek-r1":    {"match": "^deepseek/deepseek-r1", "note": "DeepSeek reasoning model"},
+    "jev":            {"prefer": ["typesafe/jev-router"], "match": "^typesafe/jev", "note": "TypeSafe Jev Router (auto-picks model + effort; variable pricing)"},
+    "gemini":         {"match": "^google/gemini-\\d", "exclude": "flash|lite|nano|customtools", "note": "Google Gemini flagship (Pro/top tier)"},
+    "gemini-flash":   {"match": "^google/gemini-\\d[\\d.]*-flash$", "note": "Fast Gemini"},
+    "glm":            {"match": "^z-ai/glm-\\d", "exclude": "flash|air|turbo|\\dv", "note": "Z.ai GLM flagship"},
+    "glm-flash":      {"match": "^z-ai/glm-\\d[\\d.]*-flash", "note": "Cheap GLM"},
+    "qwen":           {"match": "^qwen/qwen\\d[\\d.]*-max", "note": "Qwen Max line"},
+    "qwen-coder":     {"match": "^qwen/qwen\\d[\\d.]*-coder", "exclude": "30b", "note": "Qwen coding model"},
+    "qwen-flash":     {"match": "^qwen/qwen\\d[\\d.]*-flash$", "note": "Cheap Qwen"},
+    "kimi":           {"match": "^moonshotai/kimi-k\\d", "exclude": "code|thinking", "note": "Moonshot Kimi flagship"},
+    "kimi-code":      {"match": "^moonshotai/kimi-k[\\d.]+-code", "note": "Kimi coding model"},
+    "gpt":            {"match": "^openai/gpt-\\d[\\d.]*(-[a-z]+)?$", "exclude": "-pro|-mini|-nano|-chat|-codex|-oss", "note": "OpenAI GPT flagship"},
+    "codex":          {"match": "^openai/gpt-[\\d.]+-codex", "exclude": "mini", "note": "OpenAI Codex coding model"},
+    "grok":           {"match": "^x-ai/grok-\\d", "exclude": "multi-agent|build", "note": "xAI Grok"},
+    "mistral":        {"match": "^mistralai/mistral-large", "note": "Mistral Large"},
+    "devstral":       {"match": "^mistralai/devstral", "note": "Mistral coding agent model"},
+    "minimax":        {"match": "^minimax/minimax-m\\d", "exclude": "her", "note": "MiniMax M-series"},
+    "llama":          {"match": "^meta-llama/llama-\\d", "exclude": "guard", "note": "Meta Llama"},
+    "free":           {"prefer": ["openrouter/free"], "match": "^openrouter/free", "note": "OpenRouter free-models router ($0, rate limited, data may be used for training)"}
+  },
+  "compare_default": ["deepseek", "gemini"]
+}
